@@ -13,6 +13,9 @@ export interface UserResponse {
   lastName: string;
   email: string;
   phone: string;
+  birthMonth?: string;
+  birthDay?: string;
+  chatbotUserId?: string;
   createdAt?: string;
 }
 
@@ -24,6 +27,11 @@ export const userApi = {
 
   getUserData: async (): Promise<UserResponse> => {
     const response = await api.get<UserResponse>('/user-data');
+    return response.data;
+  },
+  
+  confirmData: async (): Promise<{ success: boolean }> => {
+    const response = await api.post<{ success: boolean }>('/confirm-data');
     return response.data;
   }
 };

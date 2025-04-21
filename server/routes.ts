@@ -137,6 +137,42 @@ export function registerRoutes(app: Express): Server {
       res.json(tempData);
     }
   });
+  
+  // Endpoint para confirmar los datos y enviar mensaje a ChatGPTBuilder
+  app.post('/api/confirm-data', async (req, res) => {
+    try {
+      if (!req.session.userData || !req.session.userData.chatbotUserId) {
+        return res.status(400).json({
+          success: false,
+          error: 'No hay datos de usuario en la sesión o falta el ID'
+        });
+      }
+      
+      const userId = req.session.userData.chatbotUserId;
+      
+      // Llamamos a la API de ChatGPTBuilder para enviar mensaje
+      console.log(`Enviando confirmación a ChatGPTBuilder para usuario: ${userId}`);
+      
+      const chatGptResponse = await fetch(`https://app.chatgptbuilder.io/api/users/${userId}/send/1736197240632`, {
+        method: "POST",
+        headers: {
+          "accept": "application/json",
+          "X-ACCESS-TOKEN": "1565855.C6RBAEhiHrV5b2ytPTg612PManzendsWY"
+        }
+      });
+      
+      const chatGptData = await chatGptResponse.json();
+      console.log('Respuesta de confirmación de ChatGPTBuilder:', JSON.stringify(chatGptData, null, 2));
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error al confirmar datos:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Error al confirmar los datos. Por favor intente nuevamente.'
+      });
+    }
+  });
 
   return httpServer;
 }

@@ -19,8 +19,28 @@ export default function ThankYou() {
     retryDelay: 1000
   });
 
-  const handleConfirmData = () => {
-    setDataConfirmed(true);
+  const handleConfirmData = async () => {
+    try {
+      // Mostrar el estado de confirmación inmediatamente para mejor UX
+      setDataConfirmed(true);
+      
+      // Si tenemos un ID de chatbot, enviar la confirmación a la API
+      if (userData?.chatbotUserId) {
+        console.log(`Enviando confirmación para usuario: ${userData.chatbotUserId}`);
+        const result = await userApi.confirmData();
+        
+        if (result.success) {
+          console.log('Datos confirmados con éxito');
+        } else {
+          console.error('Error al confirmar datos');
+        }
+      } else {
+        console.warn('No hay ID de usuario de chatbot para confirmar');
+      }
+    } catch (error) {
+      console.error('Error al confirmar datos:', error);
+      // No revertimos el estado porque el usuario ya vio la confirmación
+    }
   };
 
   const handleEditData = () => {
