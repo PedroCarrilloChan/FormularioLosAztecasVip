@@ -112,7 +112,7 @@ export default function ThankYou() {
                       <span className="font-bold">Teléfono:</span> {userData.phone}
                     </p>
                     <p className="text-[#592a16] font-medium">
-                      <span className="font-bold">Fecha de registro:</span> {userData.createdAt ? new Date(userData.createdAt).toLocaleString() : 'N/A'}
+                      <span className="font-bold">Fecha de cumpleaños:</span> {userData.birthMonth && userData.birthDay ? `${userData.birthMonth} ${userData.birthDay}` : 'No proporcionada'}
                     </p>
                   </div>
                   

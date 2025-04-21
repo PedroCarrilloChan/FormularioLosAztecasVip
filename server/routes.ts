@@ -87,7 +87,8 @@ export function registerRoutes(app: Express): Server {
           lastName,
           email,
           phone,
-          createdAt: new Date().toISOString()
+          birthMonth,
+          birthDay
         };
         
         res.json({ success: true });
@@ -122,7 +123,8 @@ export function registerRoutes(app: Express): Server {
         lastName: "De Prueba",
         email: "ejemplo@correo.com",
         phone: "+1234567890",
-        createdAt: new Date().toISOString()
+        birthMonth: "January",
+        birthDay: "1"
       };
       
       // Guardar en sesión y devolver
