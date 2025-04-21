@@ -58,18 +58,22 @@ export default function Home() {
 
   return (
     <div className="min-h-screen w-full relative flex flex-col">
-      {/* Fondo dinámico con diseño de glassmorphism */}
+      {/* Fondo dinámico con diseño de glassmorphism - Optimizado para móviles */}
       <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-blue-900 via-indigo-700 to-blue-900 overflow-hidden">
-        {/* Elementos decorativos flotantes */}
-        <div className="absolute top-1/4 left-1/5 w-64 h-64 rounded-full bg-blue-400/20 backdrop-blur-3xl animate-float" style={{animationDelay: '0s'}}></div>
-        <div className="absolute top-2/3 right-1/4 w-96 h-96 rounded-full bg-indigo-500/20 backdrop-blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
-        <div className="absolute bottom-1/3 left-1/3 w-72 h-72 rounded-full bg-purple-500/20 backdrop-blur-3xl animate-float" style={{animationDelay: '1s'}}></div>
+        {/* Elementos decorativos flotantes - Solo visibles en dispositivos más potentes */}
+        <div className="hidden md:block absolute top-1/4 left-1/5 w-64 h-64 rounded-full bg-blue-400/20 backdrop-blur-3xl animate-float" style={{animationDelay: '0s'}}></div>
+        <div className="hidden md:block absolute top-2/3 right-1/4 w-96 h-96 rounded-full bg-indigo-500/20 backdrop-blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
+        <div className="hidden md:block absolute bottom-1/3 left-1/3 w-72 h-72 rounded-full bg-purple-500/20 backdrop-blur-3xl animate-float" style={{animationDelay: '1s'}}></div>
+        
+        {/* Versión más simple para móviles */}
+        <div className="md:hidden absolute top-1/4 left-1/5 w-32 h-32 rounded-full bg-blue-400/20 animate-float" style={{animationDelay: '0s'}}></div>
+        <div className="md:hidden absolute bottom-1/4 right-1/5 w-40 h-40 rounded-full bg-indigo-500/20 animate-float" style={{animationDelay: '1s'}}></div>
         
         {/* Patrón de grid superpuesto */}
         <div className="absolute inset-0 bg-gradient-to-tr from-blue-800/20 to-transparent mix-blend-overlay"></div>
         
-        {/* Capa de difuminado para crear efecto glassmorfismo */}
-        <div className="absolute inset-0 backdrop-blur-[2px]"></div>
+        {/* Capa de difuminado para crear efecto glassmorfismo - Menos intenso en móviles */}
+        <div className="absolute inset-0 backdrop-blur-[1px] md:backdrop-blur-[2px]"></div>
       </div>
 
       {/* Header con logo y título - Mejorado para responsividad */}
@@ -81,6 +85,10 @@ export default function Home() {
               src={config.branding.logoUrl || "https://via.placeholder.com/200"}
               alt={config.branding.name}
               className="w-full h-full rounded-full object-cover"
+              loading="eager"
+              fetchPriority="high"
+              width="144" 
+              height="144"
             />
           </div>
           
