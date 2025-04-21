@@ -136,11 +136,11 @@ export default function IphoneInstall() {
           <div className="absolute inset-0 backdrop-blur-[1px]"></div>
         </div>
         <div className="z-10">
-          <div className="w-16 h-16 mx-auto mb-4 bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-2">
+          <div className="w-16 h-16 mx-auto mb-4">
             <img
               src="https://losaztecas.s3.us-east-1.amazonaws.com/Store+Card/Los+Aztecas+Transparent1.png"
               alt="Los Aztecas"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contain drop-shadow-xl"
             />
           </div>
           <Loader2 className="h-8 w-8 animate-spin text-[#e94e24]" />
@@ -172,13 +172,12 @@ export default function IphoneInstall() {
       <Card className="max-w-lg mx-auto shadow-2xl glass-card backdrop-blur-xl bg-[#e94e24]/15 border border-[#f0ad4e]/40 relative z-10 rounded-xl sm:rounded-2xl">
         <CardContent className="pt-6 space-y-5 sm:space-y-6 p-4 sm:p-6">
           {/* Los Aztecas Logo - Centered at top */}
-          <div className="w-24 h-24 sm:w-32 sm:h-32 p-2 mx-auto mb-4 bg-white/90 backdrop-blur-md rounded-xl shadow-lg">
+          <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4">
             <img
               src="https://losaztecas.s3.us-east-1.amazonaws.com/Store+Card/Los+Aztecas+Transparent1.png"
               alt="Los Aztecas"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contain drop-shadow-xl"
               loading="eager"
-              fetchPriority="high"
             />
           </div>
           
