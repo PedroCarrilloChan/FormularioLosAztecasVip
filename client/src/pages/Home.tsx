@@ -5,8 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { registrationSchema } from "@/lib/validation";
+import { registrationSchema, months, days } from "@/lib/validation";
 import type { RegistrationData } from "@/lib/validation";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
@@ -23,23 +24,25 @@ export default function Home() {
       firstName: "",
       lastName: "",
       email: "",
-      phone: ""
+      phone: "",
+      birthMonth: undefined,
+      birthDay: undefined
     }
   });
 
   async function onSubmit(data: RegistrationData) {
-    // Mostrar estado de carga inmediata para mejor feedback en móviles
+    // Show immediate loading state for better mobile feedback
     const loadingToast = toast({
-      title: "Procesando...",
-      description: "Estamos registrando tu información",
-      duration: 10000, // Auto-cierra después de 10 segundos si hay problemas
+      title: "Processing...",
+      description: "We are registering your information",
+      duration: 10000, // Auto-closes after 10 seconds if there are issues
     });
     
     try {
-      // Normalizar teléfono
+      // Normalize phone
       const formattedPhone = data.phone.startsWith('+') ? data.phone : `+${data.phone}`;
       
-      // Usar AbortController para timeout en conexiones lentas (mejora experiencia móvil)
+      // Use AbortController for timeout on slow connections (improves mobile experience)
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 15000);
       
@@ -57,26 +60,26 @@ export default function Home() {
       
       const result = await response.json();
 
-      // Cerrar el toast de carga
+      // Close loading toast
       loadingToast.dismiss();
 
       if (!response.ok || !result.success) {
-        throw new Error(result.error || 'Error en el registro');
+        throw new Error(result.error || 'Registration error');
       }
 
-      // Redirigir a la página de carga
+      // Redirect to loading page
       navigate('/loading');
 
     } catch (error) {
-      // Cerrar el toast de carga
+      // Close loading toast
       loadingToast.dismiss();
       
-      // Mensajes de error optimizados para móviles (más cortos y claros)
-      let errorMessage = "Error en el registro. Por favor intente nuevamente.";
+      // Mobile-optimized error messages (shorter and clearer)
+      let errorMessage = "Registration error. Please try again.";
       
       if (error instanceof Error) {
         if (error.name === 'AbortError') {
-          errorMessage = "La conexión es lenta. Intente nuevamente.";
+          errorMessage = "Connection is slow. Please try again.";
         } else {
           errorMessage = error.message;
         }
@@ -126,17 +129,17 @@ export default function Home() {
             />
           </div>
           
-          {/* Título con tipografía mejorada - Responsivo */}
+          {/* Title with improved typography - Responsive */}
           <div className="text-center space-y-2 sm:space-y-4 w-full max-w-4xl px-2 sm:px-4">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
               <span className="block sm:inline text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">Smart</span>{" "}
               <span className="block sm:inline text-[#10A852] drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">Passes</span>{" "}
               <span className="block sm:inline text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">-</span>{" "}
-              <span className="block sm:inline text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">Un Método Directo</span>{" "}
-              <span className="block sm:inline text-[#0A85FF] drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">para Tarjetas Digitales</span>
+              <span className="block sm:inline text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">A Direct Method</span>{" "}
+              <span className="block sm:inline text-[#0A85FF] drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">for Digital Cards</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-white font-medium max-w-2xl mx-auto mt-2 drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">
-              Programas de Lealtad y ¡Mucho Más!
+              Loyalty Programs and Much More!
             </p>
           </div>
         </div>
@@ -147,7 +150,7 @@ export default function Home() {
         <Card className="glass-card w-full backdrop-blur-xl bg-white/15 border border-white/20 shadow-2xl 
                         transform hover:shadow-2xl transition-all duration-300 rounded-xl sm:rounded-2xl">
           <CardHeader className="text-center p-4 sm:pb-2">
-            <CardTitle className="text-xl sm:text-2xl font-bold text-white">Registro</CardTitle>
+            <CardTitle className="text-xl sm:text-2xl font-bold text-white">Registration</CardTitle>
           </CardHeader>
           <CardContent className="p-4 sm:pt-4">
             <Form {...form}>
@@ -157,9 +160,9 @@ export default function Home() {
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-white text-sm sm:text-base">Nombre</FormLabel>
+                      <FormLabel className="font-medium text-white text-sm sm:text-base">First Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Juan" {...field} className="h-10 sm:h-11 bg-white/40 backdrop-blur-md shadow-sm text-blue-900 font-medium" />
+                        <Input placeholder="John" {...field} className="h-10 sm:h-11 bg-white/40 backdrop-blur-md shadow-sm text-blue-900 font-medium" />
                       </FormControl>
                       <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
                     </FormItem>
@@ -170,9 +173,9 @@ export default function Home() {
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-white text-sm sm:text-base">Apellido</FormLabel>
+                      <FormLabel className="font-medium text-white text-sm sm:text-base">Last Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Pérez" {...field} className="h-10 sm:h-11 bg-white/40 backdrop-blur-md shadow-sm text-blue-900 font-medium" />
+                        <Input placeholder="Smith" {...field} className="h-10 sm:h-11 bg-white/40 backdrop-blur-md shadow-sm text-blue-900 font-medium" />
                       </FormControl>
                       <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
                     </FormItem>
@@ -183,11 +186,11 @@ export default function Home() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-white text-sm sm:text-base">Correo Electrónico</FormLabel>
+                      <FormLabel className="font-medium text-white text-sm sm:text-base">Email Address</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
-                          placeholder="juan@ejemplo.com"
+                          placeholder="john@example.com"
                           {...field}
                           className="h-10 sm:h-11 bg-white/40 backdrop-blur-md shadow-sm text-blue-900 font-medium"
                         />
@@ -201,11 +204,11 @@ export default function Home() {
                   name="phone"
                   render={({ field: { onChange, value, ...field } }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-white text-sm sm:text-base">Número de Teléfono</FormLabel>
+                      <FormLabel className="font-medium text-white text-sm sm:text-base">Phone Number</FormLabel>
                       <FormControl>
                         <PhoneInput
-                          country={'mx'}
-                          preferredCountries={['mx', 'us']}
+                          country={'us'}
+                          preferredCountries={['us', 'mx']}
                           enableSearch={false}
                           disableSearchIcon={true}
                           autoFormat={true}
@@ -223,6 +226,70 @@ export default function Home() {
                     </FormItem>
                   )}
                 />
+                
+                {/* Birthday fields (optional) */}
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="birthMonth"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="font-medium text-white text-sm sm:text-base">
+                          Birth Month <span className="text-white/60 text-xs">(optional)</span>
+                        </FormLabel>
+                        <Select 
+                          onValueChange={field.onChange} 
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="h-10 sm:h-11 bg-white/40 backdrop-blur-md shadow-sm text-blue-900 font-medium border-white/30">
+                              <SelectValue placeholder="Select month" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="bg-white/95 backdrop-blur-md">
+                            {months.map((month) => (
+                              <SelectItem key={month} value={month} className="text-blue-900">
+                                {month}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="birthDay"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="font-medium text-white text-sm sm:text-base">
+                          Birth Day <span className="text-white/60 text-xs">(optional)</span>
+                        </FormLabel>
+                        <Select 
+                          onValueChange={field.onChange} 
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="h-10 sm:h-11 bg-white/40 backdrop-blur-md shadow-sm text-blue-900 font-medium border-white/30">
+                              <SelectValue placeholder="Select day" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="bg-white/95 backdrop-blur-md max-h-[200px]">
+                            {days.map((day) => (
+                              <SelectItem key={day} value={day} className="text-blue-900">
+                                {day}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
                 <Button
                   type="submit"
                   disabled={form.formState.isSubmitting}
@@ -236,10 +303,10 @@ export default function Home() {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Procesando...
+                      Processing...
                     </div>
                   ) : (
-                    "Registrarse"
+                    "Register"
                   )}
                 </Button>
               </form>
