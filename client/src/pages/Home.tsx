@@ -28,17 +28,37 @@ export default function Home() {
   });
 
   async function onSubmit(data: RegistrationData) {
+    // Mostrar estado de carga inmediata para mejor feedback en móviles
+    const loadingToast = toast({
+      title: "Procesando...",
+      description: "Estamos registrando tu información",
+      duration: 10000, // Auto-cierra después de 10 segundos si hay problemas
+    });
+    
     try {
+      // Normalizar teléfono
+      const formattedPhone = data.phone.startsWith('+') ? data.phone : `+${data.phone}`;
+      
+      // Usar AbortController para timeout en conexiones lentas (mejora experiencia móvil)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
+      
       const response = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...data,
-          phone: data.phone.startsWith('+') ? data.phone : `+${data.phone}`
-        })
+          phone: formattedPhone
+        }),
+        signal: controller.signal
       });
-
+      
+      clearTimeout(timeoutId);
+      
       const result = await response.json();
+
+      // Cerrar el toast de carga
+      loadingToast.dismiss();
 
       if (!response.ok || !result.success) {
         throw new Error(result.error || 'Error en el registro');
@@ -48,10 +68,24 @@ export default function Home() {
       navigate('/loading');
 
     } catch (error) {
+      // Cerrar el toast de carga
+      loadingToast.dismiss();
+      
+      // Mensajes de error optimizados para móviles (más cortos y claros)
+      let errorMessage = "Error en el registro. Por favor intente nuevamente.";
+      
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          errorMessage = "La conexión es lenta. Intente nuevamente.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       toast({
         variant: "destructive",
         title: "Error",
-        description: error instanceof Error ? error.message : "Error en el registro. Por favor intente nuevamente."
+        description: errorMessage
       });
     }
   }
@@ -172,11 +206,16 @@ export default function Home() {
                         <PhoneInput
                           country={'mx'}
                           preferredCountries={['mx', 'us']}
-                          enableSearch={true}
+                          enableSearch={false}
+                          disableSearchIcon={true}
+                          autoFormat={true}
+                          countryCodeEditable={false}
                           value={value}
                           onChange={(phone) => onChange(`+${phone}`)}
                           inputClass="w-full p-2 rounded-md border border-white/30 bg-white/40 backdrop-blur-md text-blue-900 font-medium h-10 sm:h-11 shadow-sm"
                           containerClass="phone-input"
+                          dropdownClass="bg-white/90 backdrop-blur-md"
+                          buttonClass="border-white/30 bg-white/40"
                           {...field}
                         />
                       </FormControl>
@@ -186,10 +225,22 @@ export default function Home() {
                 />
                 <Button
                   type="submit"
+                  disabled={form.formState.isSubmitting}
                   className="w-full h-11 sm:h-12 text-base sm:text-lg font-medium bg-gradient-to-r from-[#0A85FF] to-[#10A852] hover:shadow-lg
-                             hover:shadow-[#0A85FF]/30 transform hover:scale-[1.02] transition-all duration-300 mt-2"
+                             hover:shadow-[#0A85FF]/30 transform hover:scale-[1.02] transition-all duration-300 mt-2 
+                             disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  Registrarse
+                  {form.formState.isSubmitting ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Procesando...
+                    </div>
+                  ) : (
+                    "Registrarse"
+                  )}
                 </Button>
               </form>
             </Form>

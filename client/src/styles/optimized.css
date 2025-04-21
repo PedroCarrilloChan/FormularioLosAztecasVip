@@ -1,0 +1,61 @@
+/* Optimizaciones de rendimiento para móviles */
+
+/* Reducir los cálculos de blur y transiciones para dispositivos de bajo rendimiento */
+@media (max-width: 767px) {
+  /* Reducir complejidad de las animaciones */
+  .animate-float {
+    animation-duration: 4s !important; /* Más lento = menos cálculos */
+  }
+  
+  /* Reducir la complejidad de los efectos glassmorphism */
+  .glass-card {
+    backdrop-filter: blur(5px) !important;
+  }
+  
+  /* Optimizar las transiciones */
+  .transition-all {
+    transition-property: transform, opacity !important;
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Reducir las sombras complejas */
+  .shadow-2xl {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2) !important;
+  }
+  
+  /* Eliminar las transformaciones 3D para mejorar rendimiento */
+  .transform {
+    transform: translateZ(0);
+    will-change: opacity, transform;
+  }
+}
+
+/* Mejorar la legibilidad en dispositivos móviles */
+@media (max-width: 767px) {
+  input, select, textarea {
+    font-size: 16px !important; /* Evita zoom automático en iOS */
+  }
+  
+  /* Mejor contraste para campos sobre fondos claros */
+  .bg-white\/40 {
+    background-color: rgba(255, 255, 255, 0.6) !important;
+  }
+}
+
+/* Asegurar que los elementos interactivos sean fáciles de tocar en móviles */
+@media (max-width: 767px) {
+  button, 
+  a[role="button"],
+  .react-tel-input .flag-dropdown {
+    min-height: 44px !important;
+  }
+  
+  /* Input más grandes para dedos */
+  .form-input, 
+  .form-select, 
+  .react-tel-input .form-control {
+    min-height: 44px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+}
