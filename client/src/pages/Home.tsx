@@ -95,21 +95,21 @@ export default function Home() {
 
   return (
     <div className="min-h-screen w-full relative flex flex-col">
-      {/* Fondo dinámico con diseño de glassmorphism - Optimizado para móviles */}
-      <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-blue-900 via-indigo-700 to-blue-900 overflow-hidden">
-        {/* Elementos decorativos flotantes - Solo visibles en dispositivos más potentes */}
-        <div className="hidden md:block absolute top-1/4 left-1/5 w-64 h-64 rounded-full bg-blue-400/20 backdrop-blur-3xl animate-float" style={{animationDelay: '0s'}}></div>
-        <div className="hidden md:block absolute top-2/3 right-1/4 w-96 h-96 rounded-full bg-indigo-500/20 backdrop-blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
-        <div className="hidden md:block absolute bottom-1/3 left-1/3 w-72 h-72 rounded-full bg-purple-500/20 backdrop-blur-3xl animate-float" style={{animationDelay: '1s'}}></div>
+      {/* Background optimized for Los Aztecas VIP */}
+      <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-[#f8c04b] via-[#fbdea3] to-[#faebcf] overflow-hidden">
+        {/* Decorative elements - Only visible on more powerful devices */}
+        <div className="hidden md:block absolute top-1/4 left-1/5 w-64 h-64 rounded-full bg-[#e94e24]/10 backdrop-blur-3xl animate-float" style={{animationDelay: '0s'}}></div>
+        <div className="hidden md:block absolute top-2/3 right-1/4 w-96 h-96 rounded-full bg-[#2d8d47]/10 backdrop-blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
+        <div className="hidden md:block absolute bottom-1/3 left-1/3 w-72 h-72 rounded-full bg-[#da291c]/10 backdrop-blur-3xl animate-float" style={{animationDelay: '1s'}}></div>
         
-        {/* Versión más simple para móviles */}
-        <div className="md:hidden absolute top-1/4 left-1/5 w-32 h-32 rounded-full bg-blue-400/20 animate-float" style={{animationDelay: '0s'}}></div>
-        <div className="md:hidden absolute bottom-1/4 right-1/5 w-40 h-40 rounded-full bg-indigo-500/20 animate-float" style={{animationDelay: '1s'}}></div>
+        {/* Simpler version for mobile */}
+        <div className="md:hidden absolute top-1/4 left-1/5 w-32 h-32 rounded-full bg-[#e94e24]/10 animate-float" style={{animationDelay: '0s'}}></div>
+        <div className="md:hidden absolute bottom-1/4 right-1/5 w-40 h-40 rounded-full bg-[#2d8d47]/10 animate-float" style={{animationDelay: '1s'}}></div>
         
-        {/* Patrón de grid superpuesto */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-blue-800/20 to-transparent mix-blend-overlay"></div>
+        {/* Mexican pattern overlay */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNDB2NDBoLTQweiIvPjxwYXRoIGQ9Ik0yMCAwdjQwTTAgMjBoNDAiIHN0cm9rZT0icmdiYSgyMTcsMzYsNDQsMC4xKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjwvc3ZnPg==')] opacity-30"></div>
         
-        {/* Capa de difuminado para crear efecto glassmorfismo - Menos intenso en móviles */}
+        {/* Blur layer for glassmorphism effect - Less intense on mobile */}
         <div className="absolute inset-0 backdrop-blur-[1px] md:backdrop-blur-[2px]"></div>
       </div>
 
@@ -132,25 +132,61 @@ export default function Home() {
           {/* Title with improved typography - Responsive */}
           <div className="text-center space-y-2 sm:space-y-4 w-full max-w-4xl px-2 sm:px-4">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
-              <span className="block sm:inline text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">Smart</span>{" "}
-              <span className="block sm:inline text-[#10A852] drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">Passes</span>{" "}
-              <span className="block sm:inline text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">-</span>{" "}
-              <span className="block sm:inline text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">A Direct Method</span>{" "}
-              <span className="block sm:inline text-[#0A85FF] drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">for Digital Cards</span>
+              <span className="block text-[#e94e24] drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">Los Aztecas VIP</span>
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-white font-medium max-w-2xl mx-auto mt-2 drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">
-              Loyalty Programs and Much More!
+            <p className="text-xl sm:text-2xl md:text-3xl text-[#333] font-bold max-w-2xl mx-auto mt-2 drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">
+              Claim Your Free Rewards 🎉
             </p>
+            
+            {/* Rewards box */}
+            <div className="mt-4 bg-white/80 backdrop-blur-sm border-2 border-dashed border-[#f0ad4e] rounded-xl p-4 sm:p-6 max-w-2xl mx-auto">
+              <ul className="text-left space-y-4">
+                <li className="flex items-start gap-3">
+                  <span className="text-xl">🎁</span>
+                  <div>
+                    <span className="text-[#2d8d47] font-bold">FREE Small Cheese Dip</span>
+                    <span className="text-gray-700"> – Just for joining!</span>
+                  </div>
+                </li>
+                
+                <li className="flex items-start gap-3">
+                  <span className="text-xl">💵</span>
+                  <div>
+                    <span className="text-[#2d8d47] font-bold">$5</span>
+                    <span className="text-gray-700"> for every friend you refer</span>
+                  </div>
+                </li>
+                
+                <li className="flex items-start gap-3">
+                  <span className="text-xl">🎂</span>
+                  <div>
+                    <span className="text-[#2d8d47] font-bold">$10 Birthday Gift</span>
+                    <span className="text-gray-700"> loaded to your VIP Pass – </span>
+                    <span className="italic text-gray-700">a few days before your birthday</span>
+                  </div>
+                </li>
+                
+                <li className="flex items-start gap-3 pt-2 border-t border-[#f0ad4e]/30">
+                  <div>
+                    <span className="font-bold text-[#2d8d47]">PLUS:</span>
+                    <span className="text-gray-700"> You could be the next </span>
+                    <span className="font-bold text-[#2d8d47]">LUCKY WINNER</span>
+                    <span className="text-gray-700"> to enjoy FREE food for a whole month </span>
+                    <span className="text-xl">‼️</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Formulario con efecto glassmorphism - Mejorado para responsividad */}
+      {/* Form with Mexican-themed colors */}
       <div className="relative z-10 flex-1 container max-w-lg mx-auto px-4 py-6 sm:py-8">
-        <Card className="glass-card w-full backdrop-blur-xl bg-white/15 border border-white/20 shadow-2xl 
+        <Card className="glass-card w-full backdrop-blur-xl bg-[#e94e24]/15 border border-[#f0ad4e]/40 shadow-2xl 
                         transform hover:shadow-2xl transition-all duration-300 rounded-xl sm:rounded-2xl">
           <CardHeader className="text-center p-4 sm:pb-2">
-            <CardTitle className="text-xl sm:text-2xl font-bold text-white">Registration</CardTitle>
+            <CardTitle className="text-xl sm:text-2xl font-bold text-[#e94e24]">Join Los Aztecas VIP</CardTitle>
           </CardHeader>
           <CardContent className="p-4 sm:pt-4">
             <Form {...form}>
@@ -160,11 +196,11 @@ export default function Home() {
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-white text-sm sm:text-base">First Name</FormLabel>
+                      <FormLabel className="font-medium text-[#333] text-sm sm:text-base">First Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="John" {...field} className="h-10 sm:h-11 bg-white/40 backdrop-blur-md shadow-sm text-blue-900 font-medium" />
+                        <Input placeholder="John" {...field} className="h-10 sm:h-11 bg-white/80 backdrop-blur-md shadow-sm text-[#333] font-medium border-[#f0ad4e]/40" />
                       </FormControl>
-                      <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
+                      <FormMessage className="text-xs sm:text-sm font-medium text-[#e94e24]" />
                     </FormItem>
                   )}
                 />
@@ -173,11 +209,11 @@ export default function Home() {
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-white text-sm sm:text-base">Last Name</FormLabel>
+                      <FormLabel className="font-medium text-[#333] text-sm sm:text-base">Last Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Smith" {...field} className="h-10 sm:h-11 bg-white/40 backdrop-blur-md shadow-sm text-blue-900 font-medium" />
+                        <Input placeholder="Smith" {...field} className="h-10 sm:h-11 bg-white/80 backdrop-blur-md shadow-sm text-[#333] font-medium border-[#f0ad4e]/40" />
                       </FormControl>
-                      <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
+                      <FormMessage className="text-xs sm:text-sm font-medium text-[#e94e24]" />
                     </FormItem>
                   )}
                 />
@@ -186,16 +222,16 @@ export default function Home() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-white text-sm sm:text-base">Email Address</FormLabel>
+                      <FormLabel className="font-medium text-[#333] text-sm sm:text-base">Email Address</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
                           placeholder="john@example.com"
                           {...field}
-                          className="h-10 sm:h-11 bg-white/40 backdrop-blur-md shadow-sm text-blue-900 font-medium"
+                          className="h-10 sm:h-11 bg-white/80 backdrop-blur-md shadow-sm text-[#333] font-medium border-[#f0ad4e]/40"
                         />
                       </FormControl>
-                      <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
+                      <FormMessage className="text-xs sm:text-sm font-medium text-[#e94e24]" />
                     </FormItem>
                   )}
                 />
@@ -204,7 +240,7 @@ export default function Home() {
                   name="phone"
                   render={({ field: { onChange, value, ...field } }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-white text-sm sm:text-base">Phone Number</FormLabel>
+                      <FormLabel className="font-medium text-[#333] text-sm sm:text-base">Phone Number</FormLabel>
                       <FormControl>
                         <PhoneInput
                           country={'us'}
@@ -215,46 +251,46 @@ export default function Home() {
                           countryCodeEditable={false}
                           value={value}
                           onChange={(phone) => onChange(`+${phone}`)}
-                          inputClass="w-full p-2 rounded-md border border-white/30 bg-white/40 backdrop-blur-md text-blue-900 font-medium h-10 sm:h-11 shadow-sm"
+                          inputClass="w-full p-2 rounded-md border border-[#f0ad4e]/40 bg-white/80 backdrop-blur-md text-[#333] font-medium h-10 sm:h-11 shadow-sm"
                           containerClass="phone-input"
-                          dropdownClass="bg-white/90 backdrop-blur-md"
-                          buttonClass="border-white/30 bg-white/40"
+                          dropdownClass="bg-white/95 backdrop-blur-md"
+                          buttonClass="border-[#f0ad4e]/40 bg-white/80"
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
+                      <FormMessage className="text-xs sm:text-sm font-medium text-[#e94e24]" />
                     </FormItem>
                   )}
                 />
                 
-                {/* Birthday fields (optional) */}
+                {/* Birthday fields (optional) - Important for birthday gift! */}
                 <div className="grid grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
                     name="birthMonth"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-medium text-white text-sm sm:text-base">
-                          Birth Month <span className="text-white/60 text-xs">(optional)</span>
+                        <FormLabel className="font-medium text-[#333] text-sm sm:text-base flex items-center">
+                          Birth Month <span className="text-[#2d8d47] text-xs ml-1">(for $10 gift!)</span>
                         </FormLabel>
                         <Select 
                           onValueChange={field.onChange} 
                           defaultValue={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="h-10 sm:h-11 bg-white/40 backdrop-blur-md shadow-sm text-blue-900 font-medium border-white/30">
+                            <SelectTrigger className="h-10 sm:h-11 bg-white/80 backdrop-blur-md shadow-sm text-[#333] font-medium border-[#f0ad4e]/40">
                               <SelectValue placeholder="Select month" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="bg-white/95 backdrop-blur-md">
                             {months.map((month) => (
-                              <SelectItem key={month} value={month} className="text-blue-900">
+                              <SelectItem key={month} value={month} className="text-[#333]">
                                 {month}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
-                        <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
+                        <FormMessage className="text-xs sm:text-sm font-medium text-[#e94e24]" />
                       </FormItem>
                     )}
                   />
@@ -264,27 +300,27 @@ export default function Home() {
                     name="birthDay"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-medium text-white text-sm sm:text-base">
-                          Birth Day <span className="text-white/60 text-xs">(optional)</span>
+                        <FormLabel className="font-medium text-[#333] text-sm sm:text-base flex items-center">
+                          Birth Day <span className="text-[#2d8d47] text-xs ml-1">(for $10 gift!)</span>
                         </FormLabel>
                         <Select 
                           onValueChange={field.onChange} 
                           defaultValue={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="h-10 sm:h-11 bg-white/40 backdrop-blur-md shadow-sm text-blue-900 font-medium border-white/30">
+                            <SelectTrigger className="h-10 sm:h-11 bg-white/80 backdrop-blur-md shadow-sm text-[#333] font-medium border-[#f0ad4e]/40">
                               <SelectValue placeholder="Select day" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="bg-white/95 backdrop-blur-md max-h-[200px]">
                             {days.map((day) => (
-                              <SelectItem key={day} value={day} className="text-blue-900">
+                              <SelectItem key={day} value={day} className="text-[#333]">
                                 {day}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
-                        <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
+                        <FormMessage className="text-xs sm:text-sm font-medium text-[#e94e24]" />
                       </FormItem>
                     )}
                   />
@@ -293,8 +329,8 @@ export default function Home() {
                 <Button
                   type="submit"
                   disabled={form.formState.isSubmitting}
-                  className="w-full h-11 sm:h-12 text-base sm:text-lg font-medium bg-gradient-to-r from-[#0A85FF] to-[#10A852] hover:shadow-lg
-                             hover:shadow-[#0A85FF]/30 transform hover:scale-[1.02] transition-all duration-300 mt-2 
+                  className="w-full h-11 sm:h-12 text-base sm:text-lg font-medium bg-gradient-to-r from-[#e94e24] to-[#2d8d47] hover:shadow-lg
+                             hover:shadow-[#e94e24]/30 transform hover:scale-[1.02] transition-all duration-300 mt-2 
                              disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {form.formState.isSubmitting ? (
@@ -306,7 +342,7 @@ export default function Home() {
                       Processing...
                     </div>
                   ) : (
-                    "Register"
+                    "Get FREE Rewards Now!"
                   )}
                 </Button>
               </form>
