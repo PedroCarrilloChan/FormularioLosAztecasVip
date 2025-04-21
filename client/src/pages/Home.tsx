@@ -12,7 +12,7 @@ import type { RegistrationData } from "@/lib/validation";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { config } from "@/config";
-import { detectDevice } from "@/lib/utils";
+import userApi from "@/lib/api";
 
 export default function Home() {
   const [, navigate] = useLocation();
@@ -33,8 +33,8 @@ export default function Home() {
   async function onSubmit(data: RegistrationData) {
     // Show immediate loading state for better mobile feedback
     const loadingToast = toast({
-      title: "Processing...",
-      description: "We are registering your information",
+      title: "Procesando...",
+      description: "Estamos registrando tu información",
       duration: 10000, // Auto-closes after 10 seconds if there are issues
     });
     
@@ -42,44 +42,35 @@ export default function Home() {
       // Normalize phone
       const formattedPhone = data.phone.startsWith('+') ? data.phone : `+${data.phone}`;
       
-      // Use AbortController for timeout on slow connections (improves mobile experience)
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000);
+      // Prepare data for submission
+      const submitData = {
+        ...data,
+        phone: formattedPhone
+      };
       
-      const response = await fetch('/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...data,
-          phone: formattedPhone
-        }),
-        signal: controller.signal
-      });
-      
-      clearTimeout(timeoutId);
-      
-      const result = await response.json();
+      // Submit data to API
+      const result = await userApi.register(submitData);
 
       // Close loading toast
       loadingToast.dismiss();
 
-      if (!response.ok || !result.success) {
-        throw new Error(result.error || 'Registration error');
+      if (!result.success) {
+        throw new Error('Error en el registro');
       }
 
-      // Redirect to loading page
-      navigate('/loading');
+      // Redirect directly to thank you page
+      navigate('/thank-you');
 
     } catch (error) {
       // Close loading toast
       loadingToast.dismiss();
       
       // Mobile-optimized error messages (shorter and clearer)
-      let errorMessage = "Registration error. Please try again.";
+      let errorMessage = "Error en el registro. Por favor intenta nuevamente.";
       
       if (error instanceof Error) {
         if (error.name === 'AbortError') {
-          errorMessage = "Connection is slow. Please try again.";
+          errorMessage = "La conexión es lenta. Por favor intenta nuevamente.";
         } else {
           errorMessage = error.message;
         }

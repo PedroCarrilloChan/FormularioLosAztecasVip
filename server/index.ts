@@ -8,7 +8,7 @@ const MemoryStoreSession = MemoryStore(session);
 
 declare module 'express-session' {
   interface SessionData {
-    loyaltyData?: any;
+    userData?: any;
   }
 }
 

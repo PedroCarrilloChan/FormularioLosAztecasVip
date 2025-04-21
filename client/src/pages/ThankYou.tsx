@@ -1,15 +1,16 @@
-import { useLocation } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { SiAndroid, SiApple } from "react-icons/si";
 import { config } from "@/config";
-import { detectDevice } from "@/lib/utils";
-import { AlertCircle } from "lucide-react";
+import { userApi } from "@/lib/api";
+import { Loader2 } from "lucide-react";
 
 export default function ThankYou() {
-  const [, navigate] = useLocation();
-  const deviceType = detectDevice();
-  const isDesktop = deviceType === 'desktop';
+  // Obtener los datos del usuario registrado
+  const { data: userData, isLoading } = useQuery({
+    queryKey: ['/api/user-data'],
+    queryFn: userApi.getUserData,
+    retry: false
+  });
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#f8c04b] via-[#fbdea3] to-[#faebcf] relative">
@@ -44,7 +45,7 @@ export default function ThankYou() {
             <span className="text-[#d94214] drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">¡Gracias!</span>
           </h1>
           <p className="text-sm xs:text-base sm:text-xl md:text-2xl text-[#592a16] font-medium max-w-md text-center drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">
-            Tu registro ha sido completado exitosamente
+            Tu información ha sido procesada correctamente
           </p>
         </div>
       </div>
@@ -60,42 +61,42 @@ export default function ThankYou() {
           </CardHeader>
           
           <CardContent className="p-4 space-y-4 sm:space-y-6 md:space-y-8 relative z-10">
-            {isDesktop && (
-              <div className="bg-white/40 backdrop-blur-lg border border-white/50 p-3 sm:p-4 rounded-lg shadow-sm">
-                <div className="flex items-start sm:items-center">
-                  <AlertCircle className="h-5 w-5 text-[#d94214] mr-2 flex-shrink-0 mt-0.5 sm:mt-0" />
-                  <p className="text-xs sm:text-sm text-[#592a16] font-bold">
-                    Recuerda que las tarjetas digitales son únicamente para dispositivos móviles. Por favor, accede desde tu teléfono Android o iPhone para completar la instalación.
+            {isLoading ? (
+              <div className="flex justify-center items-center py-8">
+                <Loader2 className="h-8 w-8 animate-spin text-[#d94214]" />
+              </div>
+            ) : (
+              <>
+                <div className="bg-white/40 backdrop-blur-lg border border-white/50 p-4 sm:p-6 rounded-lg shadow-sm">
+                  <h3 className="text-lg sm:text-xl font-bold text-[#d94214] mb-4 text-center">Detalles de la Suscripción</h3>
+                  
+                  <div className="space-y-3">
+                    <p className="text-[#592a16] font-medium">
+                      <span className="font-bold">Nombre:</span> {userData?.firstName} {userData?.lastName}
+                    </p>
+                    <p className="text-[#592a16] font-medium">
+                      <span className="font-bold">Email:</span> {userData?.email}
+                    </p>
+                    <p className="text-[#592a16] font-medium">
+                      <span className="font-bold">Teléfono:</span> {userData?.phone}
+                    </p>
+                    <p className="text-[#592a16] font-medium">
+                      <span className="font-bold">Fecha de registro:</span> {userData?.createdAt ? new Date(userData.createdAt).toLocaleString() : 'N/A'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="text-center">
+                  <p className="text-base sm:text-lg text-[#592a16] font-bold">
+                    ¡Bienvenido a la familia de Los Aztecas VIP!
+                  </p>
+                  <p className="text-sm sm:text-base text-[#592a16] mt-2">
+                    Pronto recibirás información sobre tus beneficios exclusivos.
                   </p>
                 </div>
-              </div>
+              </>
             )}
-
-            <p className="text-base sm:text-lg text-center text-[#592a16] font-bold drop-shadow-sm">
-              Descarga nuestra tarjeta digital para comenzar a disfrutar de tus beneficios exclusivos como miembro VIP
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center py-2 sm:py-4">
-              <Button 
-                className="flex-1 max-w-[220px] mx-auto h-12 sm:h-16 text-sm xs:text-base sm:text-lg font-medium transition-all duration-300 
-                           hover:scale-105 active:scale-95 shadow-lg bg-gradient-to-r from-[#d94214] to-[#e05726] text-white 
-                           border border-white/20 hover:from-[#c13a10] hover:to-[#d94214] backdrop-blur-md rounded-xl" 
-                onClick={() => navigate('/android-install')}
-              >
-                <SiAndroid className="mr-1.5 xs:mr-2 sm:mr-3 h-5 xs:h-6 sm:h-7 w-5 xs:w-6 sm:w-7" />
-                Android
-              </Button>
-              <Button 
-                className="flex-1 max-w-[220px] mx-auto h-12 sm:h-16 text-sm xs:text-base sm:text-lg font-medium transition-all duration-300 
-                           hover:scale-105 active:scale-95 shadow-lg bg-gradient-to-r from-[#d94214] to-[#e05726] text-white 
-                           border border-white/20 hover:from-[#c13a10] hover:to-[#d94214] backdrop-blur-md rounded-xl" 
-                onClick={() => navigate('/iphone-install')}
-              >
-                <SiApple className="mr-1.5 xs:mr-2 sm:mr-3 h-5 xs:h-6 sm:h-7 w-5 xs:w-6 sm:w-7" />
-                iPhone
-              </Button>
-            </div>
-
+            
             {config.branding.bottomImageUrl && (
               <div className="mt-4 sm:mt-6 md:mt-8">
                 <div className="p-1 bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl">
