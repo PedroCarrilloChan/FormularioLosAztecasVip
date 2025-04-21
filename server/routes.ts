@@ -5,8 +5,8 @@ import fetch from "node-fetch";
 // Configuración del servidor
 const SERVER_CONFIG = {
   walletClub: {
-    programId: process.env.WALLET_CLUB_PROGRAM_ID || "4886905521176576",
-    apiKey: process.env.WALLET_CLUB_API_KEY || "anUdPurYdfzRyJruhKOCLliqoLKLNQPcydVziMDagAjIBzkVRyMAIaicdQLhFmiq",
+    templateId: process.env.WALLET_CLUB_TEMPLATE_ID || "4905908146798592",
+    apiKey: process.env.WALLET_CLUB_API_KEY || "itiwUSrHCAvxfqFUAzvANPPxSrBDQFvWLyPAWQylWhPAkYYvSCzFhbpcZqBwYKZp",
     baseUrl: "https://pass.smartpasses.io/api/v1",
   },
   externalServices: {
@@ -232,17 +232,25 @@ export function registerRoutes(app: Express): Server {
         phone,
       });
 
+      // Nuevo cuerpo de la solicitud según la documentación de la API
       const requestBody = {
-        firstName,
-        lastName,
-        email,
-        phone
+        FirstName: firstName,
+        LastName: lastName,
+        Email: email,
+        Phone: phone,
+        Current_Offer: "Oferta 1", // Valor por defecto
+        Id_CBB: "",
+        Id_WC: "0",
+        Id_DeReferido: "",
+        Last_Message: "",
+        Points: "0"
       };
 
       console.log('Request a Wallet Club API:', JSON.stringify(requestBody, null, 2));
 
+      // Nueva URL de la API usando templateId en lugar de programId
       const response = await fetch(
-        `${SERVER_CONFIG.walletClub.baseUrl}/loyalty/programs/${SERVER_CONFIG.walletClub.programId}/customers`, 
+        `${SERVER_CONFIG.walletClub.baseUrl}/templates/${SERVER_CONFIG.walletClub.templateId}/pass`, 
         {
           method: 'POST',
           headers: {
@@ -253,55 +261,13 @@ export function registerRoutes(app: Express): Server {
         }
       );
 
-      const responseData = await response.json() as {
-        errors?: Array<{field: string, reasons: string[]}>,
-        message?: string
-      };
+      const responseData = await response.json();
       console.log('Respuesta de Wallet Club API:', JSON.stringify(responseData, null, 2));
 
       if (!response.ok) {
         console.error('Error en Wallet Club API:', JSON.stringify(responseData, null, 2));
-
-        // Verificamos que responseData tenga la estructura esperada
-        if (responseData && typeof responseData === 'object' && 'errors' in responseData && Array.isArray(responseData.errors)) {
-          // Errores específicos para número de teléfono ya registrado
-          const hasPhoneTakenError = responseData.errors.some(
-            error => error.field === 'phone' && Array.isArray(error.reasons) && error.reasons.includes('Phone number already taken')
-          );
-          
-          if (hasPhoneTakenError) {
-            return res.status(400).json({
-              success: false,
-              error: 'Este número de teléfono ya está registrado'
-            });
-          }
-
-          // Errores de correo electrónico
-          const hasEmailError = responseData.errors.some(
-            error => error.field === 'email'
-          );
-          
-          if (hasEmailError) {
-            return res.status(400).json({
-              success: false,
-              error: 'Por favor ingrese un correo electrónico válido'
-            });
-          }
-
-          // Errores de teléfono
-          const hasPhoneError = responseData.errors.some(
-            error => error.field === 'phone'
-          );
-          
-          if (hasPhoneError) {
-            return res.status(400).json({
-              success: false,
-              error: 'Por favor ingrese un número de teléfono válido'
-            });
-          }
-        }
-
-        // Error genérico si no podemos determinar el tipo específico
+        
+        // Error genérico
         return res.status(400).json({
           success: false,
           error: responseData && typeof responseData === 'object' && 'message' in responseData 
@@ -310,7 +276,37 @@ export function registerRoutes(app: Express): Server {
         });
       }
 
-      req.session.loyaltyData = responseData;
+      // Verificar si la respuesta contiene la URL del pase
+      if (!responseData.url) {
+        return res.status(500).json({
+          success: false,
+          error: 'No se pudo generar la tarjeta digital. Por favor intente nuevamente.'
+        });
+      }
+
+      // Guardamos los datos en la sesión con la estructura esperada por el frontend
+      req.session.loyaltyData = {
+        id: responseData.serialNumber || "",
+        firstName,
+        lastName,
+        email,
+        phone,
+        card: {
+          url: responseData.url
+        },
+        customFields: {
+          Nivel: "",
+          Id_CBB: "",
+          Ofertas: "Oferta 1",
+          Id_Tarjeta: responseData.serialNumber || "",
+          Descuento: "",
+          UrlSubirNivel: "",
+          Id_DeReferido: ""
+        },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      
       res.json({ success: true });
     } catch (error) {
       console.error('Error en registro:', error);
