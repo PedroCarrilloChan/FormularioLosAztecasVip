@@ -286,7 +286,7 @@ export default function AndroidInstall() {
                   <div className="relative flex flex-col items-center space-y-3 sm:space-y-4 pt-6 sm:pt-8">
                     <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
                       <div className="animate-bounce">
-                        <ScanLine className="h-7 w-7 sm:h-8 sm:w-8 text-blue-300" />
+                        <ScanLine className="h-7 w-7 sm:h-8 sm:w-8 text-[#d94214]" />
                       </div>
                     </div>
                     <p className="text-xs sm:text-sm font-medium text-center text-white/80">
