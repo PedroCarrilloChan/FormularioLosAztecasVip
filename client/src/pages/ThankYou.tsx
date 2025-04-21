@@ -12,24 +12,19 @@ export default function ThankYou() {
   const isDesktop = deviceType === 'desktop';
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#f8c04b] via-[#fbdea3] to-[#faebcf] relative">
+      {/* Patrón mexicano de fondo para toda la página */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNDB2NDBoLTQweiIvPjxwYXRoIGQ9Ik0yMCAwdjQwTTAgMjBoNDAiIHN0cm9rZT0icmdiYSgyMTcsMzYsNDQsMC4xKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjwvc3ZnPg==')] opacity-30 pointer-events-none"></div>
+      
+      {/* Elementos decorativos para toda la página */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/5 w-64 h-64 rounded-full bg-[#d94214]/10 animate-float" style={{animationDelay: '0.5s'}}></div>
+        <div className="absolute bottom-1/4 right-1/5 w-80 h-80 rounded-full bg-[#2d8d47]/10 animate-float" style={{animationDelay: '1.2s'}}></div>
+        <div className="absolute top-3/4 left-1/3 w-72 h-72 rounded-full bg-[#f0ad4e]/20 animate-float" style={{animationDelay: '2.5s'}}></div>
+      </div>
+      
       {/* Header con los colores de Los Aztecas */}
-      <div className="h-[30vh] sm:h-[35vh] md:h-[40vh] w-full relative overflow-hidden">
-        {/* Fondo con elementos decorativos */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#f8c04b] via-[#fbdea3] to-[#faebcf]">
-          {/* Elementos decorativos - Versión para pantallas grandes */}
-          <div className="hidden md:block absolute top-1/4 left-1/5 w-64 h-64 rounded-full bg-[#e94e24]/10 backdrop-blur-3xl animate-float" style={{animationDelay: '0.5s'}}></div>
-          <div className="hidden md:block absolute bottom-10 right-1/5 w-80 h-80 rounded-full bg-[#2d8d47]/10 backdrop-blur-3xl animate-float" style={{animationDelay: '1.2s'}}></div>
-          <div className="hidden md:block absolute top-2/3 right-1/4 w-96 h-96 rounded-full bg-[#da291c]/10 backdrop-blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
-          
-          {/* Versión simplificada para móviles */}
-          <div className="md:hidden absolute top-1/4 left-1/5 w-28 h-28 rounded-full bg-[#e94e24]/10 animate-float" style={{animationDelay: '0.5s'}}></div>
-          <div className="md:hidden absolute bottom-10 right-1/5 w-36 h-36 rounded-full bg-[#2d8d47]/10 animate-float" style={{animationDelay: '1.2s'}}></div>
-        </div>
-        
-        {/* Patrón mexicano de fondo */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNDB2NDBoLTQweiIvPjxwYXRoIGQ9Ik0yMCAwdjQwTTAgMjBoNDAiIHN0cm9rZT0icmdiYSgyMTcsMzYsNDQsMC4xKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjwvc3ZnPg==')] opacity-30">
-        </div>
+      <div className="h-[30vh] sm:h-[35vh] md:h-[40vh] w-full relative overflow-hidden z-10">
         
         {/* Texto central con animación - Responsivo */}
         <div className="absolute inset-0 flex items-center justify-center flex-col px-4 space-y-2 sm:space-y-4">
