@@ -54,27 +54,27 @@ export default function ThankYou() {
 
       {/* Contenido principal - Mejorado para responsividad */}
       <div className="flex-1 container max-w-2xl mx-auto px-4 py-6 sm:py-8 md:py-12">
-        <Card className="bg-[#e94e24]/15 border border-[#f0ad4e]/40 w-full transform transition-all duration-300 shadow-2xl relative overflow-hidden rounded-xl sm:rounded-2xl backdrop-blur-xl">
+        <Card className="bg-[#fbdea3]/90 border border-[#f0ad4e]/40 w-full transform transition-all duration-300 shadow-2xl relative overflow-hidden rounded-xl sm:rounded-2xl backdrop-blur-xl">
           <CardHeader className="text-center p-4 pb-2">
             <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold">
-              <span className="text-[#d94214] drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">Los Aztecas</span>
-              <span className="text-[#2d8d47] drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]"> VIP</span>
+              <span className="text-[#d94214] drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]">Los Aztecas</span>
+              <span className="text-[#2d8d47] drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]"> VIP</span>
             </CardTitle>
           </CardHeader>
           
           <CardContent className="p-4 space-y-4 sm:space-y-6 md:space-y-8">
             {isDesktop && (
-              <div className="bg-[#f0ad4e]/20 backdrop-blur-md border-l-4 border-[#f0ad4e] p-3 sm:p-4 rounded-md">
+              <div className="bg-[#d94214]/10 backdrop-blur-md border-l-4 border-[#d94214] p-3 sm:p-4 rounded-md">
                 <div className="flex items-start sm:items-center">
-                  <AlertCircle className="h-5 w-5 text-[#f0ad4e] mr-2 flex-shrink-0 mt-0.5 sm:mt-0" />
-                  <p className="text-xs sm:text-sm text-[#592a16] font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">
+                  <AlertCircle className="h-5 w-5 text-[#d94214] mr-2 flex-shrink-0 mt-0.5 sm:mt-0" />
+                  <p className="text-xs sm:text-sm text-[#592a16] font-bold">
                     Recuerda que las tarjetas digitales son únicamente para dispositivos móviles. Por favor, accede desde tu teléfono Android o iPhone para completar la instalación.
                   </p>
                 </div>
               </div>
             )}
 
-            <p className="text-base sm:text-lg text-center text-[#592a16] font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">
+            <p className="text-base sm:text-lg text-center text-[#592a16] font-bold">
               Descarga nuestra tarjeta digital para comenzar a disfrutar de tus beneficios exclusivos como miembro VIP
             </p>
 
