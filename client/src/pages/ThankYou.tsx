@@ -29,11 +29,11 @@ export default function ThankYou() {
         {/* Texto central con animación - Responsivo */}
         <div className="absolute inset-0 flex items-center justify-center flex-col px-4 space-y-2 sm:space-y-4">
           {/* Logo */}
-          <div className="w-20 h-20 xs:w-24 xs:h-24 sm:w-32 sm:h-32 p-2 mx-auto mb-2 xs:mb-3 sm:mb-4 bg-white/90 backdrop-blur-md rounded-xl shadow-lg">
+          <div className="w-20 h-20 xs:w-24 xs:h-24 sm:w-32 sm:h-32 mx-auto mb-2 xs:mb-3 sm:mb-4">
             <img
               src={config.branding.logoUrl || "https://losaztecas.s3.us-east-1.amazonaws.com/Store+Card/Los+Aztecas+Transparent1.png"}
               alt={config.branding.name}
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contain drop-shadow-xl"
               loading="eager"
               width="80"
               height="80"
