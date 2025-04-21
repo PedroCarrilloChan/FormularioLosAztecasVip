@@ -1,16 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { config } from "@/config";
 import { userApi } from "@/lib/api";
-import { Loader2 } from "lucide-react";
+import { Loader2, CheckCircle, XCircle } from "lucide-react";
+import { useLocation } from "wouter";
+import { useState } from "react";
 
 export default function ThankYou() {
+  const [, navigate] = useLocation();
+  const [dataConfirmed, setDataConfirmed] = useState(false);
+
   // Obtener los datos del usuario registrado
-  const { data: userData, isLoading } = useQuery({
+  const { data: userData, isLoading, error, refetch } = useQuery({
     queryKey: ['/api/user-data'],
     queryFn: userApi.getUserData,
-    retry: false
+    retry: 3,
+    retryDelay: 1000
   });
+
+  const handleConfirmData = () => {
+    setDataConfirmed(true);
+  };
+
+  const handleEditData = () => {
+    // Redirigir al formulario de inicio
+    navigate('/');
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#f8c04b] via-[#fbdea3] to-[#faebcf] relative">
@@ -45,7 +61,9 @@ export default function ThankYou() {
             <span className="text-[#d94214] drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">¡Gracias!</span>
           </h1>
           <p className="text-sm xs:text-base sm:text-xl md:text-2xl text-[#592a16] font-medium max-w-md text-center drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">
-            Tu información ha sido procesada correctamente
+            {dataConfirmed 
+              ? "Tu información ha sido confirmada correctamente" 
+              : "Por favor verifica que tus datos sean correctos"}
           </p>
         </div>
       </div>
@@ -65,35 +83,70 @@ export default function ThankYou() {
               <div className="flex justify-center items-center py-8">
                 <Loader2 className="h-8 w-8 animate-spin text-[#d94214]" />
               </div>
+            ) : error || !userData ? (
+              <div className="text-center py-4">
+                <XCircle className="h-12 w-12 text-red-500 mx-auto mb-2" />
+                <p className="text-[#592a16] font-medium">No se pudieron cargar tus datos. Por favor intenta nuevamente.</p>
+                <Button 
+                  className="mt-4 bg-[#d94214] hover:bg-[#c13a10] text-white"
+                  onClick={() => refetch()}
+                >
+                  Reintentar
+                </Button>
+              </div>
             ) : (
               <>
                 <div className="bg-white/40 backdrop-blur-lg border border-white/50 p-4 sm:p-6 rounded-lg shadow-sm">
-                  <h3 className="text-lg sm:text-xl font-bold text-[#d94214] mb-4 text-center">Detalles de la Suscripción</h3>
+                  <h3 className="text-lg sm:text-xl font-bold text-[#d94214] mb-4 text-center">
+                    {dataConfirmed ? "Detalles de la Suscripción" : "¿Son estos datos correctos?"}
+                  </h3>
                   
                   <div className="space-y-3">
                     <p className="text-[#592a16] font-medium">
-                      <span className="font-bold">Nombre:</span> {userData?.firstName} {userData?.lastName}
+                      <span className="font-bold">Nombre:</span> {userData.firstName} {userData.lastName}
                     </p>
                     <p className="text-[#592a16] font-medium">
-                      <span className="font-bold">Email:</span> {userData?.email}
+                      <span className="font-bold">Email:</span> {userData.email}
                     </p>
                     <p className="text-[#592a16] font-medium">
-                      <span className="font-bold">Teléfono:</span> {userData?.phone}
+                      <span className="font-bold">Teléfono:</span> {userData.phone}
                     </p>
                     <p className="text-[#592a16] font-medium">
-                      <span className="font-bold">Fecha de registro:</span> {userData?.createdAt ? new Date(userData.createdAt).toLocaleString() : 'N/A'}
+                      <span className="font-bold">Fecha de registro:</span> {userData.createdAt ? new Date(userData.createdAt).toLocaleString() : 'N/A'}
                     </p>
                   </div>
+                  
+                  {!dataConfirmed && (
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6">
+                      <Button 
+                        className="flex-1 bg-[#2d8d47] hover:bg-[#236e38] text-white font-medium h-11 sm:h-12"
+                        onClick={handleConfirmData}
+                      >
+                        <CheckCircle className="mr-2 h-5 w-5" />
+                        Confirmar datos
+                      </Button>
+                      <Button 
+                        className="flex-1 bg-[#d94214] hover:bg-[#c13a10] text-white font-medium h-11 sm:h-12"
+                        onClick={handleEditData}
+                      >
+                        <XCircle className="mr-2 h-5 w-5" />
+                        Corregir datos
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
-                <div className="text-center">
-                  <p className="text-base sm:text-lg text-[#592a16] font-bold">
-                    ¡Bienvenido a la familia de Los Aztecas VIP!
-                  </p>
-                  <p className="text-sm sm:text-base text-[#592a16] mt-2">
-                    Pronto recibirás información sobre tus beneficios exclusivos.
-                  </p>
-                </div>
+                {dataConfirmed && (
+                  <div className="text-center py-4 bg-green-50/50 backdrop-blur-md rounded-lg border border-green-100">
+                    <CheckCircle className="mx-auto h-12 w-12 text-green-500 mb-2" />
+                    <p className="text-base sm:text-lg text-[#592a16] font-bold">
+                      ¡Bienvenido a la familia de Los Aztecas VIP!
+                    </p>
+                    <p className="text-sm sm:text-base text-[#592a16] mt-2">
+                      Pronto recibirás información sobre tus beneficios exclusivos.
+                    </p>
+                  </div>
+                )}
               </>
             )}
             
