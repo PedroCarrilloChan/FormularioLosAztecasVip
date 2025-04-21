@@ -1,8 +1,8 @@
 export const config = {
   // SmartPasses API Configuration (anteriormente Wallet Club)
   walletClub: {
-    programId: import.meta.env.VITE_WALLET_CLUB_PROGRAM_ID || "4886905521176576",
-    apiKey: import.meta.env.VITE_WALLET_CLUB_API_KEY || "hSFGTPiMDxYGijWEklMFIRzEPAlxLwOTNRiUiyOwgzfPBvnWpalPZFpbHtjanpOZ",
+    templateId: import.meta.env.VITE_WALLET_CLUB_TEMPLATE_ID || "4905908146798592",
+    apiKey: import.meta.env.VITE_WALLET_CLUB_API_KEY || "itiwUSrHCAvxfqFUAzvANPPxSrBDQFvWLyPAWQylWhPAkYYvSCzFhbpcZqBwYKZp",
     baseUrl: "https://pass.smartpasses.io/api/v1",
   },
   // Company branding

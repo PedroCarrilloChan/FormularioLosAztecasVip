@@ -270,35 +270,41 @@ export function registerRoutes(app: Express): Server {
         // Error genérico
         return res.status(400).json({
           success: false,
-          error: responseData && typeof responseData === 'object' && 'message' in responseData 
-            ? responseData.message 
+          error: typeof responseData === 'object' && responseData !== null && 'message' in responseData 
+            ? String(responseData.message) 
             : 'Error en el registro. Por favor intente nuevamente.'
         });
       }
 
       // Verificar si la respuesta contiene la URL del pase
-      if (!responseData.url) {
+      if (typeof responseData !== 'object' || responseData === null || !('url' in responseData)) {
         return res.status(500).json({
           success: false,
           error: 'No se pudo generar la tarjeta digital. Por favor intente nuevamente.'
         });
       }
 
+      const passData = responseData as {
+        serialNumber?: string;
+        passTypeIdentifier?: string;
+        url: string;
+      };
+
       // Guardamos los datos en la sesión con la estructura esperada por el frontend
       req.session.loyaltyData = {
-        id: responseData.serialNumber || "",
+        id: passData.serialNumber || "",
         firstName,
         lastName,
         email,
         phone,
         card: {
-          url: responseData.url
+          url: passData.url
         },
         customFields: {
           Nivel: "",
           Id_CBB: "",
           Ofertas: "Oferta 1",
-          Id_Tarjeta: responseData.serialNumber || "",
+          Id_Tarjeta: passData.serialNumber || "",
           Descuento: "",
           UrlSubirNivel: "",
           Id_DeReferido: ""
