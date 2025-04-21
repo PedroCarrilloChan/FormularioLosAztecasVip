@@ -123,7 +123,6 @@ export default function Home() {
               alt={config.branding.name}
               className="w-full h-full object-contain"
               loading="eager"
-              fetchPriority="high"
               width="192" 
               height="192"
             />

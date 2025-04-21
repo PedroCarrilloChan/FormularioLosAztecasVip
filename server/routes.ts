@@ -246,7 +246,7 @@ export function registerRoutes(app: Express): Server {
         LastName: lastName,
         Email: email,
         Phone: phone,
-        Current_Offer: "Oferta 1", // Valor por defecto
+        Current_Offer: "Free Cheese Nachos", // Valor por defecto
         Id_CBB: "",
         Id_WC: "0",
         Id_DeReferido: "",
@@ -363,7 +363,7 @@ export function registerRoutes(app: Express): Server {
         customFields: {
           Nivel: "",
           Id_CBB: "",
-          Ofertas: "Oferta 1",
+          Ofertas: "Free Cheese Nachos",
           Id_Tarjeta: passData.serialNumber || "",
           Descuento: "",
           UrlSubirNivel: "",
