@@ -116,16 +116,16 @@ export default function Home() {
       {/* Header con logo y título - Mejorado para responsividad */}
       <div className="relative z-10 w-full overflow-hidden py-6 sm:py-8 md:pt-12 md:pb-8">
         <div className="container mx-auto flex flex-col items-center justify-center px-4">
-          {/* Logo con sombra - Tamaño adaptativo */}
-          <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 rounded-full glass-card p-2 animate-float shadow-2xl mb-4 sm:mb-6 md:mb-8">
+          {/* Los Aztecas Logo - Optimized */}
+          <div className="w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 p-2 animate-float shadow-lg mb-4 sm:mb-6 md:mb-8 bg-white/90 backdrop-blur-md rounded-xl">
             <img
               src={config.branding.logoUrl || "https://via.placeholder.com/200"}
               alt={config.branding.name}
-              className="w-full h-full rounded-full object-cover"
+              className="w-full h-full object-contain"
               loading="eager"
               fetchPriority="high"
-              width="144" 
-              height="144"
+              width="192" 
+              height="192"
             />
           </div>
           
