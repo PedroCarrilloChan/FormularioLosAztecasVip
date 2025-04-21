@@ -13,10 +13,27 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { config } from "@/config";
 import userApi from "@/lib/api";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [, navigate] = useLocation();
+  const [location] = useLocation();
   const { toast } = useToast();
+  const [chatbotUserId, setChatbotUserId] = useState<string | null>(null);
+
+  // Extraer el ID de la URL si existe
+  useEffect(() => {
+    // Buscar un parámetro que podría ser un ID (después de ? o &)
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id') || params.get('userId') || params.get('user');
+    
+    if (id) {
+      console.log('Chatbot User ID detectado:', id);
+      setChatbotUserId(id);
+    } else {
+      console.log('No se detectó un ID en la URL');
+    }
+  }, [location]);
 
   const form = useForm<RegistrationData>({
     resolver: zodResolver(registrationSchema),
@@ -45,7 +62,8 @@ export default function Home() {
       // Prepare data for submission
       const submitData = {
         ...data,
-        phone: formattedPhone
+        phone: formattedPhone,
+        chatbotUserId: chatbotUserId || undefined
       };
       
       // Submit data to API

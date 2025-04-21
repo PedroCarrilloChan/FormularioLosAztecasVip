@@ -13,7 +13,7 @@ export function registerRoutes(app: Express): Server {
 
   app.post('/api/register', async (req, res) => {
     try {
-      const { firstName, lastName, email, phone, birthMonth, birthDay } = req.body;
+      const { firstName, lastName, email, phone, birthMonth, birthDay, chatbotUserId } = req.body;
 
       if (!firstName || !lastName || !email || !phone) {
         return res.status(400).json({ 
@@ -21,6 +21,9 @@ export function registerRoutes(app: Express): Server {
           error: 'Faltan campos requeridos' 
         });
       }
+      
+      // Guardar el ID del chatbot si está disponible para usarlo en confirmación
+      const userId = chatbotUserId || '000000000000'; // Valor por defecto si no se proporciona
 
       console.log('Datos de registro:', {
         firstName,
@@ -88,7 +91,8 @@ export function registerRoutes(app: Express): Server {
           email,
           phone,
           birthMonth,
-          birthDay
+          birthDay,
+          chatbotUserId: userId
         };
         
         res.json({ success: true });
@@ -124,7 +128,8 @@ export function registerRoutes(app: Express): Server {
         email: "ejemplo@correo.com",
         phone: "+1234567890",
         birthMonth: "January",
-        birthDay: "1"
+        birthDay: "1",
+        chatbotUserId: "000000000000"
       };
       
       // Guardar en sesión y devolver
