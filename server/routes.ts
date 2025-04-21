@@ -2,6 +2,12 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import fetch from "node-fetch";
 
+// Array auxiliar para mapear nombres de meses a números - definido globalmente
+const MONTHS = [
+  "January", "February", "March", "April", "May", "June", 
+  "July", "August", "September", "October", "November", "December"
+];
+
 // Configuración del servidor
 const SERVER_CONFIG = {
   walletClub: {
@@ -216,7 +222,7 @@ export function registerRoutes(app: Express): Server {
   });
   app.post('/api/register', async (req, res) => {
     try {
-      const { firstName, lastName, email, phone } = req.body;
+      const { firstName, lastName, email, phone, birthMonth, birthDay } = req.body;
 
       if (!firstName || !lastName || !email || !phone) {
         return res.status(400).json({ 
@@ -230,6 +236,8 @@ export function registerRoutes(app: Express): Server {
         lastName,
         email,
         phone,
+        birthMonth,
+        birthDay
       });
 
       // Nuevo cuerpo de la solicitud según la documentación de la API
@@ -245,6 +253,58 @@ export function registerRoutes(app: Express): Server {
         Last_Message: "",
         Points: "0"
       };
+      
+      // Llamada a ChatGPTBuilder.io si el usuario proporcionó fecha de nacimiento
+      if (birthMonth && birthDay) {
+        try {
+          // Convertir month name a número de mes (January -> 01, February -> 02, etc.)
+          const monthNumber = (MONTHS.indexOf(birthMonth) + 1).toString().padStart(2, '0');
+          
+          // Formato: YYYY-MM-DD (siempre usando 1980 como año)
+          const formattedBirthDate = `1980-${monthNumber}-${birthDay.padStart(2, '0')}`;
+          
+          console.log('Enviando datos de cumpleaños a ChatGPTBuilder.io:', {
+            phone,
+            firstName,
+            lastName,
+            email,
+            formattedBirthDate
+          });
+          
+          // Preparamos las acciones para el API
+          const actions = [
+            {
+              action: "set_field_value",
+              field_name: "WC_UserBirthday",
+              value: formattedBirthDate
+            }
+          ];
+          
+          // Llamamos a la API de ChatGPTBuilder
+          const chatGptResponse = await fetch("https://app.chatgptbuilder.io/api/users", {
+            method: "POST",
+            headers: {
+              "accept": "application/json",
+              "X-ACCESS-TOKEN": "1565855.C6RBAEhiHrV5b2ytPTg612PManzendsWY",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              phone: phone,
+              first_name: firstName,
+              last_name: lastName,
+              email: email,
+              WC_UserBirthday: formattedBirthDate,
+              actions: actions
+            })
+          });
+          
+          const chatGptData = await chatGptResponse.json();
+          console.log('Respuesta de ChatGPTBuilder.io:', JSON.stringify(chatGptData, null, 2));
+        } catch (error) {
+          // En caso de error en esta API, solo lo registramos pero continuamos con el flujo principal
+          console.error('Error al enviar datos a ChatGPTBuilder.io:', error);
+        }
+      }
 
       console.log('Request a Wallet Club API:', JSON.stringify(requestBody, null, 2));
 
