@@ -137,41 +137,40 @@ export default function Home() {
               Claim Your Free Rewards 🎉
             </p>
             
-            {/* Rewards box */}
-            <div className="mt-4 bg-white/80 backdrop-blur-sm border-2 border-dashed border-[#f0ad4e] rounded-xl p-4 sm:p-6 max-w-2xl mx-auto">
-              <ul className="text-left space-y-4">
-                <li className="flex items-start gap-3">
-                  <span className="text-xl">🎁</span>
+            {/* Rewards box - Optimizado para móviles */}
+            <div className="mt-4 bg-white/80 backdrop-blur-sm border-2 border-dashed border-[#f0ad4e] rounded-xl p-3 sm:p-6 max-w-2xl mx-auto shadow-md">
+              <ul className="text-left space-y-3 sm:space-y-4">
+                <li className="flex items-start gap-2 sm:gap-3">
+                  <span className="text-lg sm:text-xl flex-shrink-0 mt-0.5">🎁</span>
                   <div>
-                    <span className="text-[#2d8d47] font-bold">FREE Small Cheese Dip</span>
-                    <span className="text-gray-700"> – Just for joining!</span>
+                    <span className="text-[#2d8d47] font-bold text-sm sm:text-base">FREE Small Cheese Dip</span>
+                    <span className="text-gray-700 text-sm sm:text-base"> – Just for joining!</span>
                   </div>
                 </li>
                 
-                <li className="flex items-start gap-3">
-                  <span className="text-xl">💵</span>
+                <li className="flex items-start gap-2 sm:gap-3">
+                  <span className="text-lg sm:text-xl flex-shrink-0 mt-0.5">💵</span>
                   <div>
-                    <span className="text-[#2d8d47] font-bold">$5</span>
-                    <span className="text-gray-700"> for every friend you refer</span>
+                    <span className="text-[#2d8d47] font-bold text-sm sm:text-base">$5</span>
+                    <span className="text-gray-700 text-sm sm:text-base"> for every friend you refer</span>
                   </div>
                 </li>
                 
-                <li className="flex items-start gap-3">
-                  <span className="text-xl">🎂</span>
-                  <div>
+                <li className="flex items-start gap-2 sm:gap-3">
+                  <span className="text-lg sm:text-xl flex-shrink-0 mt-0.5">🎂</span>
+                  <div className="text-sm sm:text-base">
                     <span className="text-[#2d8d47] font-bold">$10 Birthday Gift</span>
-                    <span className="text-gray-700"> loaded to your VIP Pass – </span>
-                    <span className="italic text-gray-700">a few days before your birthday</span>
+                    <span className="text-gray-700"> loaded to your VIP Pass</span>
                   </div>
                 </li>
                 
-                <li className="flex items-start gap-3 pt-2 border-t border-[#f0ad4e]/30">
-                  <div>
+                <li className="flex items-start gap-2 sm:gap-3 pt-2 border-t border-[#f0ad4e]/30">
+                  <span className="text-lg sm:text-xl flex-shrink-0 mt-0.5">✨</span>
+                  <div className="text-sm sm:text-base">
                     <span className="font-bold text-[#2d8d47]">PLUS:</span>
                     <span className="text-gray-700"> You could be the next </span>
                     <span className="font-bold text-[#2d8d47]">LUCKY WINNER</span>
-                    <span className="text-gray-700"> to enjoy FREE food for a whole month </span>
-                    <span className="text-xl">‼️</span>
+                    <span className="text-gray-700"> to enjoy FREE food for a whole month!</span>
                   </div>
                 </li>
               </ul>
@@ -270,7 +269,7 @@ export default function Home() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="font-medium text-[#333] text-sm sm:text-base flex items-center">
-                          Birth Month <span className="text-[#2d8d47] text-xs ml-1">(for $10 gift!)</span>
+                          Birth Month
                         </FormLabel>
                         <Select 
                           onValueChange={field.onChange} 
@@ -300,7 +299,7 @@ export default function Home() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="font-medium text-[#333] text-sm sm:text-base flex items-center">
-                          Birth Day <span className="text-[#2d8d47] text-xs ml-1">(for $10 gift!)</span>
+                          Birth Day
                         </FormLabel>
                         <Select 
                           onValueChange={field.onChange} 

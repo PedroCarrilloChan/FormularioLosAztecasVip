@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Soporte para pantallas extra pequeñas */
+@media (min-width: 400px) {
+  .xs\:w-24 {
+    width: 6rem;
+  }
+  .xs\:h-24 {
+    height: 6rem;
+  }
+  .xs\:mb-3 {
+    margin-bottom: 0.75rem;
+  }
+  .xs\:text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+  .xs\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;

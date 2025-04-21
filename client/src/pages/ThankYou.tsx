@@ -29,19 +29,21 @@ export default function ThankYou() {
         {/* Texto central con animación - Responsivo */}
         <div className="absolute inset-0 flex items-center justify-center flex-col px-4 space-y-2 sm:space-y-4">
           {/* Logo */}
-          <div className="w-24 h-24 sm:w-32 sm:h-32 p-2 mx-auto mb-4 bg-white/90 backdrop-blur-md rounded-xl shadow-lg">
+          <div className="w-20 h-20 xs:w-24 xs:h-24 sm:w-32 sm:h-32 p-2 mx-auto mb-2 xs:mb-3 sm:mb-4 bg-white/90 backdrop-blur-md rounded-xl shadow-lg">
             <img
               src={config.branding.logoUrl || "https://losaztecas.s3.us-east-1.amazonaws.com/Store+Card/Los+Aztecas+Transparent1.png"}
               alt={config.branding.name}
               className="w-full h-full object-contain"
               loading="eager"
+              width="80"
+              height="80"
             />
           </div>
           
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold">
+          <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold">
             <span className="text-[#d94214] drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">¡Gracias!</span>
           </h1>
-          <p className="text-base sm:text-xl md:text-2xl text-[#592a16] font-medium max-w-md text-center drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">
+          <p className="text-sm xs:text-base sm:text-xl md:text-2xl text-[#592a16] font-medium max-w-md text-center drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">
             Tu registro ha sido completado exitosamente
           </p>
         </div>
@@ -73,23 +75,23 @@ export default function ThankYou() {
               Descarga nuestra tarjeta digital para comenzar a disfrutar de tus beneficios exclusivos como miembro VIP
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center py-2 sm:py-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center py-2 sm:py-4">
               <Button 
-                className="flex-1 max-w-xs mx-auto h-14 sm:h-16 text-base sm:text-lg font-medium transition-all duration-300 
+                className="flex-1 max-w-[220px] mx-auto h-12 sm:h-16 text-sm xs:text-base sm:text-lg font-medium transition-all duration-300 
                            hover:scale-105 active:scale-95 shadow-lg bg-gradient-to-r from-[#d94214] to-[#e05726] text-white 
-                           border border-white/20 hover:from-[#c13a10] hover:to-[#d94214] backdrop-blur-md" 
+                           border border-white/20 hover:from-[#c13a10] hover:to-[#d94214] backdrop-blur-md rounded-xl" 
                 onClick={() => navigate('/android-install')}
               >
-                <SiAndroid className="mr-2 sm:mr-3 h-6 sm:h-7 w-6 sm:w-7" />
+                <SiAndroid className="mr-1.5 xs:mr-2 sm:mr-3 h-5 xs:h-6 sm:h-7 w-5 xs:w-6 sm:w-7" />
                 Android
               </Button>
               <Button 
-                className="flex-1 max-w-xs mx-auto h-14 sm:h-16 text-base sm:text-lg font-medium transition-all duration-300 
+                className="flex-1 max-w-[220px] mx-auto h-12 sm:h-16 text-sm xs:text-base sm:text-lg font-medium transition-all duration-300 
                            hover:scale-105 active:scale-95 shadow-lg bg-gradient-to-r from-[#d94214] to-[#e05726] text-white 
-                           border border-white/20 hover:from-[#c13a10] hover:to-[#d94214] backdrop-blur-md" 
+                           border border-white/20 hover:from-[#c13a10] hover:to-[#d94214] backdrop-blur-md rounded-xl" 
                 onClick={() => navigate('/iphone-install')}
               >
-                <SiApple className="mr-2 sm:mr-3 h-6 sm:h-7 w-6 sm:w-7" />
+                <SiApple className="mr-1.5 xs:mr-2 sm:mr-3 h-5 xs:h-6 sm:h-7 w-5 xs:w-6 sm:w-7" />
                 iPhone
               </Button>
             </div>
