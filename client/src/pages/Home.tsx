@@ -329,8 +329,8 @@ export default function Home() {
                 <Button
                   type="submit"
                   disabled={form.formState.isSubmitting}
-                  className="w-full h-11 sm:h-12 text-base sm:text-lg font-medium bg-gradient-to-r from-[#e94e24] to-[#2d8d47] hover:shadow-lg
-                             hover:shadow-[#e94e24]/30 transform hover:scale-[1.02] transition-all duration-300 mt-2 
+                  className="w-full h-11 sm:h-12 text-base sm:text-lg font-medium bg-[#d94214] hover:bg-[#c03812] hover:shadow-lg
+                             hover:shadow-[#d94214]/30 transform hover:scale-[1.02] transition-all duration-300 mt-2 
                              disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {form.formState.isSubmitting ? (
