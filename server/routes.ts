@@ -205,7 +205,14 @@ export function registerRoutes(app: Express): Server {
       console.log(`📡 Datos: ${JSON.stringify(userData, null, 2)}`);
       
       // Preparación de datos para ChatGPTBuilder
-      const payload = {
+      const payload: {
+        first_name: string;
+        last_name: string;
+        phone: string;
+        email: string;
+        birth_month?: string;
+        birth_day?: string;
+      } = {
         first_name: userData.firstName,
         last_name: userData.lastName,
         phone: userData.phone,
