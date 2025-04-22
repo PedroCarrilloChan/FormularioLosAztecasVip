@@ -1,23 +1,30 @@
-import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { config } from "@/config";
-import { userApi } from "@/lib/api";
-import { Loader2, CheckCircle, XCircle } from "lucide-react";
-import { useLocation } from "wouter";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'wouter';
+import { useQuery } from '@tanstack/react-query';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Loader2, CheckCircle, XCircle } from 'lucide-react';
+import { config } from '@/config';
 
 export default function ThankYou() {
-  const [, navigate] = useLocation();
-  const [dataConfirmed, setDataConfirmed] = useState(false);
+  const [location] = useLocation();
   const [closing, setClosing] = useState(false);
-  const cardRef = useRef<HTMLDivElement | null>(null);
-  const mainRef = useRef<HTMLDivElement | null>(null);
-
-  // Obtener los datos del usuario registrado
+  
+  // Referencias para la animación
+  const cardRef = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
+  
+  // Extraer ID del parámetro
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id') || '';
+  
   const { data: userData, isLoading, error, refetch } = useQuery({
-    queryKey: ['/api/user-data'],
-    queryFn: userApi.getUserData,
+    queryKey: ['userData'],
+    queryFn: async () => {
+      const res = await fetch('/api/user-data');
+      if (!res.ok) throw new Error('Error loading user data');
+      return res.json();
+    },
     retry: 3,
     retryDelay: 1000
   });
@@ -30,7 +37,7 @@ export default function ThankYou() {
       cardRef.current.style.maxHeight = `${height}px`;
       cardRef.current.setAttribute('data-original-height', `${height}`);
     }
-  }, [dataConfirmed]); // Se ejecuta cuando cambia dataConfirmed
+  }, [userData]); // Se ejecuta cuando llegan los datos
   
   // Efecto para animar el cierre
   useEffect(() => {
@@ -69,22 +76,18 @@ export default function ThankYou() {
     }
   }, [closing]);
 
-  const handleConfirmData = () => {
-    console.log('🎯 BOTÓN CONFIRMAR PRESIONADO');
-    
-    // Primero mostramos la confirmación visual
-    setDataConfirmed(true);
-    
-    // Después de un momento, iniciamos la animación de cierre
-    setTimeout(() => {
-      console.log('⭐ Iniciando animación de cierre...');
-      setClosing(true);
-    }, 1200);
-  };
-
-  const handleEditData = () => {
-    navigate('/');
-  };
+  // Iniciar animación de cierre automáticamente después de mostrar la palomita
+  useEffect(() => {
+    if (userData && !isLoading && !error) {
+      // Después de un momento, iniciamos la animación de cierre
+      const timer = setTimeout(() => {
+        console.log('⭐ Iniciando animación de cierre...');
+        setClosing(true);
+      }, 2000); // Esperar 2 segundos antes de cerrar
+      
+      return () => clearTimeout(timer);
+    }
+  }, [userData, isLoading, error]);
 
   return (
     <div ref={mainRef} className="min-h-screen w-full relative flex flex-col">
@@ -125,58 +128,16 @@ export default function ThankYou() {
                 </Button>
               </div>
             ) : (
-              <>
-                {!dataConfirmed ? (
-                  <div className="space-y-4">
-                    <h3 className="text-base font-medium text-[#d94214] text-center">
-                      ¿Son estos datos correctos?
-                    </h3>
-                    
-                    <div className="space-y-2 bg-white/50 p-3 rounded-lg">
-                      <p className="text-[#592a16] text-sm">
-                        <span className="font-medium">Nombre:</span> {userData.firstName} {userData.lastName}
-                      </p>
-                      <p className="text-[#592a16] text-sm">
-                        <span className="font-medium">Email:</span> {userData.email}
-                      </p>
-                      <p className="text-[#592a16] text-sm">
-                        <span className="font-medium">Teléfono:</span> {userData.phone}
-                      </p>
-                      <p className="text-[#592a16] text-sm">
-                        <span className="font-medium">Cumpleaños:</span> {userData.birthMonth && userData.birthDay ? `${userData.birthMonth} ${userData.birthDay}` : 'No proporcionado'}
-                      </p>
-                    </div>
-                    
-                    <div className="flex flex-col gap-2">
-                      <Button 
-                        className="w-full bg-[#2d8d47] hover:bg-[#236e38] text-white text-sm h-10"
-                        onClick={handleConfirmData}
-                      >
-                        <CheckCircle className="mr-2 h-4 w-4" />
-                        Confirmar
-                      </Button>
-                      <Button 
-                        className="w-full bg-[#d94214] hover:bg-[#c13a10] text-white text-sm h-10"
-                        onClick={handleEditData}
-                      >
-                        <XCircle className="mr-2 h-4 w-4" />
-                        Corregir
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-center py-6 bg-green-50/50 backdrop-blur-md rounded-lg border border-green-100 relative">
-                    <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
-                    
-                    {/* ID discreto */}
-                    {userData.chatbotUserId && (
-                      <div className="text-center text-[8px] text-green-800/20 mt-3 font-mono">
-                        ref:{userData.chatbotUserId}
-                      </div>
-                    )}
+              <div className="text-center py-6 bg-green-50/50 backdrop-blur-md rounded-lg border border-green-100 relative">
+                <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
+                
+                {/* ID discreto */}
+                {userData.chatbotUserId && (
+                  <div className="text-center text-[8px] text-green-800/20 mt-3 font-mono">
+                    ref:{userData.chatbotUserId}
                   </div>
                 )}
-              </>
+              </div>
             )}
           </CardContent>
         </Card>
