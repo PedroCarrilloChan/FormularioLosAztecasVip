@@ -134,24 +134,24 @@ export default function Home() {
         <div className="absolute inset-0 backdrop-blur-[1px] md:backdrop-blur-[2px]"></div>
       </div>
 
-      {/* Header con logo y título - Espaciado proporcionado */}
-      <div className="relative z-10 w-full overflow-hidden py-4 sm:py-6">
-        <div className="container mx-auto flex flex-col items-center justify-center px-4">
-          {/* Los Aztecas Logo - Con tamaño balanceado */}
-          <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 animate-float mb-3 mt-5">
+      {/* Header con logo y título - Espacio mínimo */}
+      <div className="relative z-10 w-full overflow-hidden py-1">
+        <div className="container mx-auto flex flex-col items-center justify-center px-2">
+          {/* Los Aztecas Logo - Tamaño reducido */}
+          <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 animate-float mb-0 mt-2">
             <img
               src={config.branding.logoUrl || "https://via.placeholder.com/200"}
               alt={config.branding.name}
               className="w-full h-full object-contain drop-shadow-md"
               loading="eager"
-              width="120" 
-              height="120"
+              width="80" 
+              height="80"
             />
           </div>
           
-          {/* Title with simple typography - Espaciado apropiado */}
-          <div className="text-center w-full max-w-xl px-2 mt-1">
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+          {/* Title with simple typography - Sin espacios */}
+          <div className="text-center w-full max-w-xl px-0 mt-0 mb-1">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
               <span className="block text-[#e94e24] drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">Los Aztecas VIP</span>
             </h1>
           </div>
@@ -159,15 +159,15 @@ export default function Home() {
       </div>
 
       {/* Form with Mexican-themed colors */}
-      <div className="relative z-10 flex-1 container max-w-lg mx-auto px-4 py-6 sm:py-8">
+      <div className="relative z-10 flex-1 container max-w-lg mx-auto px-2 py-1 sm:py-2">
         <Card className="glass-card w-full backdrop-blur-xl bg-[#e94e24]/15 border border-[#f0ad4e]/40 shadow-2xl 
                         transform hover:shadow-2xl transition-all duration-300 rounded-xl sm:rounded-2xl">
-          <CardHeader className="text-center p-3">
-            <CardTitle className="text-lg font-medium text-[#e94e24]">Registration Form</CardTitle>
+          <CardHeader className="text-center p-2">
+            <CardTitle className="text-base font-medium text-[#e94e24]">Registration Form</CardTitle>
           </CardHeader>
-          <CardContent className="p-4 sm:pt-4">
+          <CardContent className="p-2 pt-1">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 sm:space-y-3">
                 <FormField
                   control={form.control}
                   name="firstName"

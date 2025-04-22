@@ -96,22 +96,22 @@ export default function ThankYou() {
         <div className="absolute inset-0 backdrop-blur-[1px]"></div>
       </div>
 
-      {/* Contenido principal correctamente espaciado */}
-      <div className="flex-1 container max-w-md mx-auto px-4 py-6 z-20 flex flex-col items-center justify-center">
-        {/* Logo con tamaño ajustado */}
-        <div className="w-24 h-24 mx-auto mb-4 mt-6">
+      {/* Contenido principal muy compacto */}
+      <div className="flex-1 container max-w-md mx-auto px-2 py-1 z-20 flex flex-col items-center justify-center">
+        {/* Logo pequeño */}
+        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 mt-2">
           <img
             src={config.branding.logoUrl || "https://losaztecas.s3.us-east-1.amazonaws.com/Store+Card/Los+Aztecas+Transparent1.png"}
             alt={config.branding.name}
             className="w-full h-full object-contain drop-shadow-md"
             loading="eager"
-            width="96"
-            height="96"
+            width="64"
+            height="64"
           />
         </div>
         
         <Card ref={cardRef} className="bg-white/60 backdrop-blur-md border border-white/40 w-full shadow-md rounded-xl transition-all duration-700">
-          <CardContent className="p-4 space-y-4 relative">
+          <CardContent className="p-3 space-y-2 relative">
             {isLoading ? (
               <div className="flex justify-center items-center py-6">
                 <Loader2 className="h-8 w-8 animate-spin text-[#d94214]" />
