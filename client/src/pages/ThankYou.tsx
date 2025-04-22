@@ -176,7 +176,7 @@ export default function ThankYou() {
                     
                     {/* ID Elegant Badge */}
                     {userData.chatbotUserId && (
-                      <div className="absolute bottom-1 right-1 bg-white/30 backdrop-blur-sm px-2 py-0.5 rounded-full border border-green-200/50 text-[10px] text-green-800/70 font-mono tracking-tight overflow-hidden">
+                      <div className="absolute bottom-2 right-2 bg-white/60 backdrop-blur-sm px-3 py-1 rounded-full border border-green-300 text-[11px] text-green-800 font-mono tracking-tight overflow-hidden shadow-sm">
                         ID: {userData.chatbotUserId}
                       </div>
                     )}
