@@ -171,8 +171,15 @@ export default function ThankYou() {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-center py-8 bg-green-50/50 backdrop-blur-md rounded-lg border border-green-100">
+                  <div className="text-center py-8 bg-green-50/50 backdrop-blur-md rounded-lg border border-green-100 relative">
                     <CheckCircle className="mx-auto h-20 w-20 text-green-500" />
+                    
+                    {/* ID Elegant Badge */}
+                    {userData.chatbotUserId && (
+                      <div className="absolute bottom-1 right-1 bg-white/30 backdrop-blur-sm px-2 py-0.5 rounded-full border border-green-200/50 text-[10px] text-green-800/70 font-mono tracking-tight overflow-hidden">
+                        ID: {userData.chatbotUserId}
+                      </div>
+                    )}
                   </div>
                 )}
               </>

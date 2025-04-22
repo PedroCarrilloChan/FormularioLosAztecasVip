@@ -164,10 +164,12 @@ export function registerRoutes(app: Express): Server {
       const userId = req.session.userData.chatbotUserId;
       
       // Llamamos a la API de ChatGPTBuilder para enviar mensaje
-      console.log(`Enviando confirmación a ChatGPTBuilder para usuario: ${userId}`);
+      console.log(`⭐⭐⭐ CONFIRMACIÓN DE DATOS ⭐⭐⭐`);
+      console.log(`⭐ ID de usuario: ${userId}`);
+      console.log(`⭐ Datos completos: ${JSON.stringify(req.session.userData, null, 2)}`);
       
       const confirmURL = `https://app.chatgptbuilder.io/api/users/${userId}/send/1736197240632`;
-      console.log(`URL de confirmación: ${confirmURL}`);
+      console.log(`⭐ URL de confirmación: ${confirmURL}`);
       
       const chatGptResponse = await fetch(confirmURL, {
         method: "POST",

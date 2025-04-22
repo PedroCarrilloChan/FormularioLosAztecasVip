@@ -34,19 +34,23 @@ export default function Home() {
       console.log('✅ CHATBOT USER ID DETECTADO:', id);
       setChatbotUserId(id);
       
-      // Añadir un elemento visual para desarrollo
-      const debugElement = document.createElement('div');
-      debugElement.style.position = 'fixed';
-      debugElement.style.bottom = '10px';
-      debugElement.style.right = '10px';
-      debugElement.style.padding = '5px 10px';
-      debugElement.style.background = 'rgba(0,0,0,0.7)';
-      debugElement.style.color = 'white';
-      debugElement.style.borderRadius = '4px';
-      debugElement.style.fontSize = '12px';
-      debugElement.style.zIndex = '9999';
-      debugElement.textContent = `ID: ${id}`;
-      document.body.appendChild(debugElement);
+      // Añadir un elemento visual más elegante
+      const idBadgeElement = document.createElement('div');
+      idBadgeElement.style.position = 'fixed';
+      idBadgeElement.style.bottom = '10px';
+      idBadgeElement.style.right = '10px';
+      idBadgeElement.style.padding = '4px 8px';
+      idBadgeElement.style.background = 'rgba(255,255,255,0.3)';
+      idBadgeElement.style.backdropFilter = 'blur(4px)';
+      idBadgeElement.style.color = 'rgba(45,141,71,0.8)';
+      idBadgeElement.style.borderRadius = '12px';
+      idBadgeElement.style.fontSize = '10px';
+      idBadgeElement.style.fontFamily = 'monospace';
+      idBadgeElement.style.zIndex = '9999';
+      idBadgeElement.style.border = '1px solid rgba(45,141,71,0.2)';
+      idBadgeElement.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)';
+      idBadgeElement.textContent = `ID: ${id}`;
+      document.body.appendChild(idBadgeElement);
     } else {
       console.log('❌ No se detectó un ID en la URL');
     }
