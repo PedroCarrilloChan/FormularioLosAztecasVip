@@ -139,10 +139,35 @@ export const userApi = {
       // Realizar la petición directamente a ChatGPTBuilder
       const url = `/users/${userId}/send_content`;
       console.log(`🧪 Enviando petición a: ${url}`);
-      const response = await chatGPTBuilderApi.post(url, chatGPTBuilderData);
-      
-      console.log('🧪 Respuesta de ChatGPTBuilder:', JSON.stringify(response.data, null, 2));
-      return { success: true };
+      try {
+        const response = await chatGPTBuilderApi.post(url, chatGPTBuilderData);
+        
+        console.log('🧪 PETICIÓN EXITOSA ✅');
+        console.log('🧪 Status code:', response.status);
+        console.log('🧪 Respuesta de ChatGPTBuilder:', JSON.stringify(response.data, null, 2));
+        
+        // Imprimir la URL completa para verificar
+        console.log('🧪 URL completa:', `${config.chatGPTBuilder.baseUrl}/users/${userId}/send_content`);
+        console.log('🧪 Cabeceras enviadas:', JSON.stringify({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-ACCESS-TOKEN': config.chatGPTBuilder.accessToken
+        }, null, 2));
+        
+        return { success: true };
+      } catch (apiError: any) {
+        console.log('🧪 ERROR EN LA PETICIÓN ❌');
+        console.log('🧪 Mensaje de error:', apiError.message);
+        
+        // Capturar información detallada de respuesta si está disponible
+        if (apiError.response) {
+          console.log('🧪 Status code:', apiError.response.status);
+          console.log('🧪 Respuesta de error:', JSON.stringify(apiError.response.data, null, 2));
+        }
+        
+        // Re-lanzar el error para manejarlo en el nivel superior
+        throw apiError;
+      }
     } catch (error) {
       console.error('🚨 ERROR al enviar datos a ChatGPTBuilder:', error);
       console.error('🚨 Stack trace:', (error as any)?.stack);

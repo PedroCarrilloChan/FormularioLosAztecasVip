@@ -61,8 +61,18 @@ export default function ThankYou() {
           } else {
             console.error('Error al enviar datos a ChatGPTBuilder');
           }
-        } catch (apiError) {
-          console.error('Error al enviar datos a ChatGPTBuilder:', apiError);
+        } catch (apiError: any) {
+          console.error('⚠️ ERROR EN PÁGINA THANK YOU:', apiError.message);
+          
+          // Si hay información de respuesta, mostrarla
+          if (apiError.response) {
+            console.error('⚠️ Status:', apiError.response.status);
+            console.error('⚠️ Data:', JSON.stringify(apiError.response.data, null, 2));
+          }
+          
+          // Mostrar detalles completos del error
+          console.error('⚠️ Detalles completos del error:', apiError);
+          
           // Mantenemos el estado de confirmación para no confundir al usuario
           // ya que visualmente ya se mostró la confirmación
         }
