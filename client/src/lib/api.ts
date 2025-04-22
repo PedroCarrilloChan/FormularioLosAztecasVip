@@ -65,8 +65,17 @@ export const userApi = {
   // Método para enviar datos directamente a ChatGPTBuilder (actualizado con acciones)
   sendToChatGPTBuilder: async (userData: UserResponse): Promise<{ success: boolean }> => {
     try {
+      console.log('🔍 INICIO DIAGNÓSTICO API CHATGPTBUILDER 🔍');
+      console.log('🔍 Datos de usuario recibidos:', JSON.stringify(userData, null, 2));
+      
+      // Verificación crítica: ¿Tenemos un ID de usuario?
+      if (!userData.chatbotUserId) {
+        console.warn('⚠️ ALERTA: No hay chatbotUserId en los datos del usuario!');
+      }
+      
       // Determinar el ID de usuario correcto para ChatGPTBuilder
       const userId = userData.chatbotUserId || config.chatGPTBuilder.defaultUserId;
+      console.log('🔍 ID Usuario a utilizar:', userId);
       
       // Formatear la fecha de nacimiento si está disponible
       let formattedBirthDate = '';
@@ -75,8 +84,15 @@ export const userApi = {
         const monthIndex = months.indexOf(userData.birthMonth);
         if (monthIndex > -1) {
           const monthNumber = (monthIndex + 1).toString().padStart(2, '0');
-          formattedBirthDate = `1980-${monthNumber}-${userData.birthDay.padStart(2, '0')}`;
+          // Asegurarse de que el día tiene 2 dígitos
+          const paddedDay = userData.birthDay.padStart(2, '0');
+          formattedBirthDate = `1980-${monthNumber}-${paddedDay}`;
+          console.log('🔍 Fecha de nacimiento formateada:', formattedBirthDate);
+        } else {
+          console.warn('⚠️ Mes de nacimiento no reconocido:', userData.birthMonth);
         }
+      } else {
+        console.log('🔍 No se proporcionaron datos de fecha de nacimiento');
       }
       
       // Crear las acciones para actualizar los campos del usuario
@@ -136,10 +152,17 @@ export const userApi = {
       console.log(`🧪 API URL: ${config.chatGPTBuilder.baseUrl}/users/${userId}/send_content`);
       console.log(`🧪 Payload completo:`, JSON.stringify(chatGPTBuilderData, null, 2));
       
+      // Verificar que el cliente de axios esté configurado correctamente
+      console.log('🔍 Configuración del cliente axios:');
+      console.log('🔍 Base URL:', chatGPTBuilderApi.defaults.baseURL);
+      console.log('🔍 Headers por defecto:', JSON.stringify(chatGPTBuilderApi.defaults.headers, null, 2));
+      
       // Realizar la petición directamente a ChatGPTBuilder
       const url = `/users/${userId}/send_content`;
       console.log(`🧪 Enviando petición a: ${url}`);
+      
       try {
+        console.log('🔍 Iniciando petición POST...');
         const response = await chatGPTBuilderApi.post(url, chatGPTBuilderData);
         
         console.log('🧪 PETICIÓN EXITOSA ✅');
@@ -163,6 +186,14 @@ export const userApi = {
         if (apiError.response) {
           console.log('🧪 Status code:', apiError.response.status);
           console.log('🧪 Respuesta de error:', JSON.stringify(apiError.response.data, null, 2));
+          console.log('🧪 Headers de respuesta:', JSON.stringify(apiError.response.headers, null, 2));
+        } else if (apiError.request) {
+          // La solicitud se realizó pero no se recibió respuesta
+          console.log('🧪 No se recibió respuesta del servidor');
+          console.log('🧪 Detalles de la solicitud:', apiError.request);
+        } else {
+          // Error en la configuración de la solicitud
+          console.log('🧪 Error en la configuración de la solicitud');
         }
         
         // Re-lanzar el error para manejarlo en el nivel superior
@@ -171,6 +202,13 @@ export const userApi = {
     } catch (error) {
       console.error('🚨 ERROR al enviar datos a ChatGPTBuilder:', error);
       console.error('🚨 Stack trace:', (error as any)?.stack);
+      
+      // Para asegurarnos de que los errores sean visibles en la consola
+      if (error instanceof Error) {
+        console.error('🚨 Nombre del error:', error.name);
+        console.error('🚨 Mensaje del error:', error.message);
+      }
+      
       throw error;
     }
   }
