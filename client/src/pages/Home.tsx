@@ -82,8 +82,14 @@ export default function Home() {
         throw new Error('Error en el registro');
       }
 
-      // Redirect directly to thank you page
-      navigate('/thank-you');
+      // Preservar el ID al navegar
+      const currentParams = new URLSearchParams(window.location.search);
+      const id = currentParams.get('id') || '';
+      
+      console.log('⭐ Navegando a página de confirmación con ID:', id);
+      
+      // Redirect directly to thank you page with ID parameter
+      navigate(id ? `/thank-you?id=${id}` : '/thank-you');
 
     } catch (error) {
       // Close loading toast

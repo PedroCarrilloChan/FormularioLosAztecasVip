@@ -1,4 +1,4 @@
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { Switch, Route } from "wouter";
 import { lazy, Suspense } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -21,28 +21,56 @@ const PageLoader = () => (
   </div>
 );
 
-// Crear una base personalizada para el router que maneje correctamente los parámetros de la URL
-const RouterBase = (props: any) => {
-  // Esto asegura que los parámetros de la URL se mantengan al navegar
-  const makePublicUrl = (path: string) => {
-    const url = new URL(path, window.location.href);
-    // Conservar los parámetros de URL actuales (como id)
+// Función auxiliar para preservar parámetros de URL al navegar
+const preserveParams = (to: string): string => {
+  try {
+    // Obtener los parámetros actuales
     const currentParams = new URLSearchParams(window.location.search);
-    currentParams.forEach((value, key) => {
-      if (key === 'id' || key === 'userId' || key === 'user') {
-        url.searchParams.set(key, value);
-      }
-    });
+    const chatbotId = currentParams.get('id') || currentParams.get('userId') || '';
     
-    return url.pathname + url.search;
-  };
-
-  return <WouterRouter base={''} makeUrl={makePublicUrl} {...props} />;
+    // Si hay un ID y estamos navegando a una ruta interna, lo añadimos
+    if (chatbotId && !to.includes('://')) {
+      // Si la URL destino ya tiene parámetros, añadimos el ID
+      if (to.includes('?')) {
+        return `${to}&id=${chatbotId}`;
+      } else {
+        return `${to}?id=${chatbotId}`;
+      }
+    }
+    return to;
+  } catch (error) {
+    console.error('Error preservando parámetros:', error);
+    return to;
+  }
 };
 
-function AppRouter() {
+// Hook personalizado para uso en otros componentes
+export const usePreserveParams = () => {
+  return {
+    preserveParams
+  };
+};
+
+function App() {
+  // Registrar la URL actual para depuración
+  console.log('🔄 App inicializada - URL:', window.location.href);
+  console.log('🔄 Parámetros URL:', Object.fromEntries(new URLSearchParams(window.location.search).entries()));
+  
+  // Interceptamos la navegación para preservar parámetros
+  const originalPushState = window.history.pushState;
+  if (!window.historyPatchApplied) {
+    window.history.pushState = function(state, title, url) {
+      // Si la URL es un string, tratamos de preservar los parámetros
+      if (typeof url === 'string') {
+        url = preserveParams(url);
+      }
+      return originalPushState.call(this, state, title, url);
+    };
+    window.historyPatchApplied = true;
+  }
+  
   return (
-    <RouterBase>
+    <QueryClientProvider client={queryClient}>
       <Suspense fallback={<PageLoader />}>
         <Switch>
           <Route path="/" component={Home} />
@@ -50,21 +78,16 @@ function AppRouter() {
           <Route component={NotFound} />
         </Switch>
       </Suspense>
-    </RouterBase>
-  );
-}
-
-function App() {
-  // Registrar la URL actual para depuración
-  console.log('🔄 App inicializada - URL:', window.location.href);
-  console.log('🔄 Parámetros URL:', Object.fromEntries(new URLSearchParams(window.location.search).entries()));
-  
-  return (
-    <QueryClientProvider client={queryClient}>
-      <AppRouter />
       <Toaster />
     </QueryClientProvider>
   );
+}
+
+// Añadir esta propiedad a Window para TypeScript
+declare global {
+  interface Window {
+    historyPatchApplied?: boolean;
+  }
 }
 
 export default App;
