@@ -134,23 +134,23 @@ export default function Home() {
         <div className="absolute inset-0 backdrop-blur-[1px] md:backdrop-blur-[2px]"></div>
       </div>
 
-      {/* Header con logo y título - Espaciado reducido */}
-      <div className="relative z-10 w-full overflow-hidden py-2 sm:py-3">
+      {/* Header con logo y título - Espaciado proporcionado */}
+      <div className="relative z-10 w-full overflow-hidden py-4 sm:py-6">
         <div className="container mx-auto flex flex-col items-center justify-center px-4">
-          {/* Los Aztecas Logo - Tamaño y márgenes optimizados */}
-          <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 animate-float mb-1 mt-4">
+          {/* Los Aztecas Logo - Con tamaño balanceado */}
+          <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 animate-float mb-3 mt-5">
             <img
               src={config.branding.logoUrl || "https://via.placeholder.com/200"}
               alt={config.branding.name}
               className="w-full h-full object-contain drop-shadow-md"
               loading="eager"
-              width="100" 
-              height="100"
+              width="120" 
+              height="120"
             />
           </div>
           
-          {/* Title with simple typography - Espaciado reducido */}
-          <div className="text-center w-full max-w-xl px-2 mt-0">
+          {/* Title with simple typography - Espaciado apropiado */}
+          <div className="text-center w-full max-w-xl px-2 mt-1">
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
               <span className="block text-[#e94e24] drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">Los Aztecas VIP</span>
             </h1>

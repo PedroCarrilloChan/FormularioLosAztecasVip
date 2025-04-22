@@ -93,17 +93,17 @@ export default function ThankYou() {
         <div className="absolute inset-0 backdrop-blur-[1px]"></div>
       </div>
 
-      {/* Contenido principal simplificado con menos espaciado */}
-      <div className="flex-1 container max-w-md mx-auto px-4 py-4 z-20 flex flex-col items-center justify-center">
-        {/* Logo más arriba y más pequeño */}
-        <div className="w-20 h-20 mx-auto mb-2 mt-4">
+      {/* Contenido principal correctamente espaciado */}
+      <div className="flex-1 container max-w-md mx-auto px-4 py-6 z-20 flex flex-col items-center justify-center">
+        {/* Logo con tamaño ajustado */}
+        <div className="w-24 h-24 mx-auto mb-4 mt-6">
           <img
             src={config.branding.logoUrl || "https://losaztecas.s3.us-east-1.amazonaws.com/Store+Card/Los+Aztecas+Transparent1.png"}
             alt={config.branding.name}
             className="w-full h-full object-contain drop-shadow-md"
             loading="eager"
-            width="80"
-            height="80"
+            width="96"
+            height="96"
           />
         </div>
         
