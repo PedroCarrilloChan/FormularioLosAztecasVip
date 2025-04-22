@@ -40,62 +40,9 @@ export function registerRoutes(app: Express): Server {
       });
       
       try {
-        // Si hay fecha de nacimiento, la procesamos
-        let formattedBirthDate = '';
-        
-        if (birthMonth && birthDay) {
-          // Convertir month name a número de mes (January -> 01, February -> 02, etc.)
-          const monthNumber = (MONTHS.indexOf(birthMonth) + 1).toString().padStart(2, '0');
-          
-          // Formato: YYYY-MM-DD (siempre usando 1980 como año)
-          formattedBirthDate = `1980-${monthNumber}-${birthDay.padStart(2, '0')}`;
-        }
-        
-        console.log('Enviando datos a ChatGPTBuilder.io:', {
-          phone,
-          firstName,
-          lastName,
-          email,
-          formattedBirthDate
-        });
-        
-        // Preparamos las acciones para el API si hay fecha de nacimiento
-        const actions = formattedBirthDate ? [
-          {
-            action: "set_field_value",
-            field_name: "WC_UserBirthday",
-            value: formattedBirthDate
-          }
-        ] : [];
-        
-        // Llamamos a la API de ChatGPTBuilder
-        const chatGptResponse = await fetch("https://app.chatgptbuilder.io/api/users", {
-          method: "POST",
-          headers: {
-            "accept": "application/json",
-            "X-ACCESS-TOKEN": "1565855.C6RBAEhiHrV5b2ytPTg612PManzendsWY",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            phone: phone,
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            ...(formattedBirthDate && { WC_UserBirthday: formattedBirthDate }),
-            actions: actions
-          })
-        });
-        
-        const chatGptData = await chatGptResponse.json();
-        console.log('Respuesta de ChatGPTBuilder.io:', JSON.stringify(chatGptData, null, 2));
-        
-        // Obtener el ID del usuario de la respuesta de la API si está disponible
-        // De lo contrario, usar el ID que se pasó en la URL
-        const apiUserId = (chatGptData && typeof chatGptData === 'object' && 'data' in chatGptData && chatGptData.data && typeof chatGptData.data === 'object' && 'id' in chatGptData.data) 
-            ? String(chatGptData.data.id) 
-            : userId;
-        
-        console.log(`ID de usuario para segunda llamada: ${apiUserId}`);
+        // Solo guardamos los datos en la sesión para usarlos en confirmación
+        // Ya NO creamos un nuevo usuario, solo actualizaremos el existente cuando el usuario confirme
+        console.log('Guardando datos de formulario en sesión para posterior confirmación');
         
         // Guardamos los datos en la sesión para poder accederlos en la página de éxito
         req.session.userData = {
@@ -105,7 +52,7 @@ export function registerRoutes(app: Express): Server {
           phone,
           birthMonth,
           birthDay,
-          chatbotUserId: apiUserId
+          chatbotUserId: userId // Usamos el ID de la URL, no creamos uno nuevo
         };
         
         res.json({ success: true });
@@ -204,25 +151,65 @@ export function registerRoutes(app: Express): Server {
       console.log(`📡 Enviando datos a ChatGPTBuilder API para usuario ${userId}`);
       console.log(`📡 Datos: ${JSON.stringify(userData, null, 2)}`);
       
+      // Preparar formato de fecha de nacimiento
+      let formattedBirthDate = '';
+      if (userData.birthMonth && userData.birthDay) {
+        // Convertir month name a número de mes (January -> 01, February -> 02, etc.)
+        const monthNumber = (MONTHS.indexOf(userData.birthMonth) + 1).toString().padStart(2, '0');
+        // Formato: YYYY-MM-DD (usando 1980 como año)
+        formattedBirthDate = `1980-${monthNumber}-${userData.birthDay.padStart(2, '0')}`;
+      }
+      
+      // Crear acciones para actualizar los campos
+      const actions = [
+        {
+          action: "set_field_value",
+          field_name: "first_name",
+          value: userData.firstName
+        },
+        {
+          action: "set_field_value",
+          field_name: "last_name",
+          value: userData.lastName
+        },
+        {
+          action: "set_field_value",
+          field_name: "email",
+          value: userData.email
+        },
+        {
+          action: "set_field_value",
+          field_name: "phone",
+          value: userData.phone
+        },
+        {
+          action: "set_field_value",
+          field_name: "full_name",
+          value: `${userData.firstName} ${userData.lastName}`
+        }
+      ];
+      
+      // Agregar acción de cumpleaños si está disponible
+      if (formattedBirthDate) {
+        actions.push({
+          action: "set_field_value",
+          field_name: "WC_UserBirthday",
+          value: formattedBirthDate
+        });
+      }
+      
       // Preparación de datos para ChatGPTBuilder
-      const payload: {
-        first_name: string;
-        last_name: string;
-        phone: string;
-        email: string;
-        birth_month?: string;
-        birth_day?: string;
-      } = {
+      const payload = {
+        phone: userData.phone,
         first_name: userData.firstName,
         last_name: userData.lastName,
-        phone: userData.phone,
-        email: userData.email
+        email: userData.email,
+        actions: actions
       };
       
-      // Agregar datos de cumpleaños si están disponibles
-      if (userData.birthMonth && userData.birthDay) {
-        payload.birth_month = userData.birthMonth;
-        payload.birth_day = userData.birthDay;
+      // Agregar campo de cumpleaños si está disponible
+      if (formattedBirthDate) {
+        payload.WC_UserBirthday = formattedBirthDate;
       }
       
       // Realizar la llamada a la API
