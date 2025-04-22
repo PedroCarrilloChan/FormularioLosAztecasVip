@@ -26,7 +26,10 @@ export default function ThankYou() {
       
       // Verificar que tenemos datos de usuario
       if (userData) {
-        console.log(`Enviando datos a ChatGPTBuilder para: ${userData.firstName} ${userData.lastName}`);
+        console.log(`⭐⭐⭐ CONFIRMACIÓN INICIADA ⭐⭐⭐`);
+        console.log(`⭐ Enviando datos a ChatGPTBuilder para: ${userData.firstName} ${userData.lastName}`);
+        console.log(`⭐ ID de usuario: ${userData.chatbotUserId || 'NO DISPONIBLE'}`);
+        console.log(`⭐ Datos completos:`, JSON.stringify(userData, null, 2));
         
         try {
           // Enviar los datos directamente a ChatGPTBuilder API para actualizar el usuario existente

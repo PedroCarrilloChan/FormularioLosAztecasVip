@@ -131,16 +131,21 @@ export const userApi = {
         chatGPTBuilderData.WC_UserBirthday = formattedBirthDate;
       }
       
-      console.log(`Enviando datos a ChatGPTBuilder para usuario ${userId}:`, chatGPTBuilderData);
+      console.log(`🧪 INICIO PROCESO DE ACTUALIZACIÓN 🧪`);
+      console.log(`🧪 ID Usuario: ${userId}`);
+      console.log(`🧪 API URL: ${config.chatGPTBuilder.baseUrl}/users/${userId}/send_content`);
+      console.log(`🧪 Payload completo:`, JSON.stringify(chatGPTBuilderData, null, 2));
       
       // Realizar la petición directamente a ChatGPTBuilder
       const url = `/users/${userId}/send_content`;
+      console.log(`🧪 Enviando petición a: ${url}`);
       const response = await chatGPTBuilderApi.post(url, chatGPTBuilderData);
       
-      console.log('ChatGPTBuilder response:', response.data);
+      console.log('🧪 Respuesta de ChatGPTBuilder:', JSON.stringify(response.data, null, 2));
       return { success: true };
     } catch (error) {
-      console.error('Error sending data to ChatGPTBuilder:', error);
+      console.error('🚨 ERROR al enviar datos a ChatGPTBuilder:', error);
+      console.error('🚨 Stack trace:', (error as any)?.stack);
       throw error;
     }
   }
