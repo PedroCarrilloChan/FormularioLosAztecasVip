@@ -39,30 +39,116 @@ export function registerRoutes(app: Express): Server {
         chatbotUserId
       });
       
+      // Guardamos los datos del usuario en el objeto userData
+      const userData = {
+        firstName,
+        lastName,
+        email,
+        phone,
+        birthMonth,
+        birthDay,
+        chatbotUserId: userId
+      };
+      
+      // NUEVO: Enviar datos a ChatGPTBuilder durante el registro
       try {
-        // Solo guardamos los datos en la sesión para usarlos en confirmación
-        // Ya NO creamos un nuevo usuario, solo actualizaremos el existente cuando el usuario confirme
-        console.log('Guardando datos de formulario en sesión para posterior confirmación');
+        console.log('📱 Enviando datos a ChatGPTBuilder durante el registro...');
         
-        // Guardamos los datos en la sesión para poder accederlos en la página de éxito
-        req.session.userData = {
-          firstName,
-          lastName,
-          email,
-          phone,
-          birthMonth,
-          birthDay,
-          chatbotUserId: userId // Usamos el ID de la URL, no creamos uno nuevo
+        // Preparar formato de fecha de nacimiento
+        let formattedBirthDate = '';
+        if (birthMonth && birthDay) {
+          const monthNumber = (MONTHS.indexOf(birthMonth) + 1).toString().padStart(2, '0');
+          formattedBirthDate = `1980-${monthNumber}-${birthDay.padStart(2, '0')}`;
+          console.log('📱 Fecha de nacimiento formateada:', formattedBirthDate);
+        }
+        
+        // Crear acciones para actualizar los campos
+        const actions = [
+          {
+            action: "set_field_value",
+            field_name: "first_name",
+            value: firstName
+          },
+          {
+            action: "set_field_value",
+            field_name: "last_name",
+            value: lastName
+          },
+          {
+            action: "set_field_value",
+            field_name: "email",
+            value: email
+          },
+          {
+            action: "set_field_value",
+            field_name: "phone",
+            value: phone
+          },
+          {
+            action: "set_field_value",
+            field_name: "full_name",
+            value: `${firstName} ${lastName}`
+          },
+          // Acción para iniciar el flujo específico
+          {
+            action: "send_flow",
+            flow_id: 1736197240632
+          }
+        ];
+        
+        // Agregar acción de cumpleaños si está disponible
+        if (formattedBirthDate) {
+          actions.push({
+            action: "set_field_value",
+            field_name: "WC_UserBirthday",
+            value: formattedBirthDate
+          });
+        }
+        
+        // Preparar payload para ChatGPTBuilder
+        const payload = {
+          phone: phone,
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          actions: actions
         };
         
-        res.json({ success: true });
-      } catch (error) {
-        console.error('Error al enviar datos a ChatGPTBuilder.io:', error);
-        res.status(500).json({ 
-          success: false,
-          error: 'Error al procesar la información. Por favor intente nuevamente.'
+        // Agregar campo de cumpleaños si disponible
+        if (formattedBirthDate) {
+          (payload as any).WC_UserBirthday = formattedBirthDate;
+        }
+        
+        // Realizar la llamada a la API
+        const url = `https://app.chatgptbuilder.io/api/users/${userId}/send_content`;
+        console.log(`📱 URL: ${url}`);
+        console.log(`📱 Payload: ${JSON.stringify(payload, null, 2)}`);
+        
+        const chatGptResponse = await fetch(url, {
+          method: "POST",
+          headers: {
+            "accept": "application/json",
+            "X-ACCESS-TOKEN": "1565855.C6RBAEhiHrV5b2ytPTg612PManzendsWY",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
         });
+        
+        const chatGptData = await chatGptResponse.json();
+        console.log('📱 Respuesta de ChatGPTBuilder:', JSON.stringify(chatGptData, null, 2));
+        
+        // Marcar en el objeto userData que los datos ya fueron enviados
+        (userData as any).dataSentToChatGPT = true;
+      } catch (apiError) {
+        console.error('Error al enviar datos a ChatGPTBuilder durante el registro:', apiError);
+        // Continuamos con el proceso aunque haya error para que el usuario pueda ver sus datos
       }
+      
+      // Guardar los datos en sesión para mostrarlos en página de confirmación
+      console.log('Guardando datos de formulario en sesión para posterior confirmación');
+      req.session.userData = userData;
+      
+      res.json({ success: true });
     } catch (error) {
       console.error('Error en registro:', error);
       res.status(500).json({ 

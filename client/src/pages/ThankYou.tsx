@@ -19,81 +19,30 @@ export default function ThankYou() {
     retryDelay: 1000
   });
 
-  const handleConfirmData = async () => {
+  const handleConfirmData = () => {
     console.log('🎯 BOTÓN CONFIRMAR PRESIONADO');
-    try {
-      // Mostrar el estado de confirmación inmediatamente para mejor UX
-      setDataConfirmed(true);
+    // Simplemente mostramos el indicador de confirmación y cerramos la ventana
+    setDataConfirmed(true);
+    
+    // Cerrar la ventana después de un breve tiempo para que el usuario vea la confirmación
+    console.log('⭐ Configurando temporizador para cerrar ventana...');
+    setTimeout(() => {
+      console.log('⭐ Cerrando ventana...');
+      try {
+        window.close();
+        console.log('⭐ Comando window.close() ejecutado');
+      } catch (closeError) {
+        console.warn('⚠️ Error al intentar cerrar ventana:', closeError);
+      }
       
-      // Verificar que tenemos datos de usuario
-      if (userData) {
-        console.log(`⭐⭐⭐ CONFIRMACIÓN INICIADA ⭐⭐⭐`);
-        console.log(`⭐ Enviando datos a través del backend para: ${userData.firstName} ${userData.lastName}`);
-        console.log(`⭐ ID de usuario: ${userData.chatbotUserId || 'NO DISPONIBLE'}`);
-        
-        try {
-          // Llamar al endpoint de confirmación en el backend
-          // Este endpoint se encargará de enviar los datos a ChatGPTBuilder
-          console.log('⭐ Llamando a userApi.confirmData...');
-          const result = await userApi.confirmData();
-          
-          console.log('⭐ Resultado de confirmData:', result);
-          if (result.success) {
-            console.log('⭐ Datos enviados correctamente a ChatGPTBuilder desde el backend');
-            
-            // Esperar un breve tiempo para que el usuario vea el mensaje de confirmación
-            // y luego cerrar la ventana
-            console.log('⭐ Configurando temporizador para cerrar ventana...');
-            setTimeout(() => {
-              console.log('⭐ Cerrando ventana...');
-              try {
-                window.close();
-                console.log('⭐ Comando window.close() ejecutado');
-              } catch (closeError) {
-                console.warn('⚠️ Error al intentar cerrar ventana:', closeError);
-              }
-              
-              // Como respaldo, si window.close() no funciona (por políticas del navegador),
-              // redirigir a una URL que pueda cerrar (ChatGPTBuilder u otra URL acordada)
-              setTimeout(() => {
-                // Si después de 300ms la ventana sigue abierta, intentamos redirigir
-                console.log('⭐ Ventana no se cerró, intentando redirección...');
-                window.location.href = "https://app.chatgptbuilder.io/close";
-              }, 300);
-            }, 1500); // 1.5 segundos para que el usuario vea la confirmación
-          } else {
-            console.error('❌ Error al enviar datos a ChatGPTBuilder: result.success es false');
-          }
-        } catch (apiError: any) {
-          console.error('⚠️ ERROR EN PÁGINA THANK YOU:', apiError.message);
-          
-          // Si hay información de respuesta, mostrarla
-          if (apiError.response) {
-            console.error('⚠️ Status:', apiError.response.status);
-            console.error('⚠️ Data:', JSON.stringify(apiError.response.data, null, 2));
-          } else if (apiError.request) {
-            // La solicitud se hizo pero no hubo respuesta
-            console.error('⚠️ No se recibió respuesta del servidor');
-            console.error('⚠️ Detalles de la solicitud:', apiError.request);
-          } else {
-            // Error en la configuración de la solicitud
-            console.error('⚠️ Error en la configuración de la solicitud:', apiError.message);
-          }
-          
-          // Mostrar detalles completos del error
-          console.error('⚠️ Detalles completos del error:', apiError);
-        }
-      } else {
-        console.error('❌ No hay datos de usuario para enviar');
-      }
-    } catch (error) {
-      console.error('❌ Error general en el proceso de confirmación:', error);
-      if (error instanceof Error) {
-        console.error('❌ Nombre del error:', error.name);
-        console.error('❌ Mensaje del error:', error.message);
-        console.error('❌ Stack trace:', error.stack);
-      }
-    }
+      // Como respaldo, si window.close() no funciona (por políticas del navegador),
+      // redirigir a una URL que pueda cerrar (ChatGPTBuilder u otra URL acordada)
+      setTimeout(() => {
+        // Si después de 300ms la ventana sigue abierta, intentamos redirigir
+        console.log('⭐ Ventana no se cerró, intentando redirección...');
+        window.location.href = "https://app.chatgptbuilder.io/close";
+      }, 300);
+    }, 1500); // 1.5 segundos para que el usuario vea la confirmación
   };
 
   const handleEditData = () => {
