@@ -22,24 +22,50 @@ export default function ThankYou() {
     retryDelay: 1000
   });
   
+  // Guardar la altura original del elemento
+  useEffect(() => {
+    if (cardRef.current) {
+      // Guardamos la altura original en un atributo data-
+      const height = cardRef.current.getBoundingClientRect().height;
+      cardRef.current.style.maxHeight = `${height}px`;
+      cardRef.current.setAttribute('data-original-height', `${height}`);
+    }
+  }, [dataConfirmed]); // Se ejecuta cuando cambia dataConfirmed
+  
   // Efecto para animar el cierre
   useEffect(() => {
     if (closing && cardRef.current && mainRef.current) {
-      // Animar el cierre del card
-      cardRef.current.style.transition = "all 0.7s ease";
-      cardRef.current.style.transform = "scale(0.1)";
-      cardRef.current.style.opacity = "0";
+      // Aseguramos que la tarjeta tenga su altura original al inicio
+      const originalHeight = cardRef.current.getAttribute('data-original-height') || '300';
+      cardRef.current.style.maxHeight = `${originalHeight}px`;
       
-      // Animar el fondo
-      mainRef.current.style.transition = "all 0.9s ease";
-      mainRef.current.style.opacity = "0";
-      
-      // Después de la animación, dejar una página en blanco sin 'File not found'
+      // Pequeño retraso antes de comenzar la animación
       setTimeout(() => {
-        // Remover todos los elementos de la página para una página blanca limpia
-        document.body.innerHTML = "";
-        document.body.style.backgroundColor = "white";
-      }, 800);
+        // Animar el cierre del card como un acordeón vertical
+        cardRef.current!.style.transition = "all 0.9s ease";
+        cardRef.current!.style.maxHeight = "0px";
+        cardRef.current!.style.margin = "0";
+        cardRef.current!.style.padding = "0";
+        cardRef.current!.style.overflow = "hidden";
+        cardRef.current!.style.opacity = "0";
+        
+        // Animar también el contenedor principal reduciéndolo verticalmente
+        setTimeout(() => {
+          if (mainRef.current) {
+            mainRef.current.style.transition = "all 0.7s ease";
+            mainRef.current.style.maxHeight = "0px";
+            mainRef.current.style.overflow = "hidden";
+            mainRef.current.style.opacity = "0";
+            
+            // Después de la animación, dejar una página en blanco sin 'File not found'
+            setTimeout(() => {
+              // Remover todos los elementos de la página para una página blanca limpia
+              document.body.innerHTML = "";
+              document.body.style.backgroundColor = "white";
+            }, 800);
+          }
+        }, 300);
+      }, 100);
     }
   }, [closing]);
 
