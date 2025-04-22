@@ -84,6 +84,14 @@ export function registerRoutes(app: Express): Server {
         const chatGptData = await chatGptResponse.json();
         console.log('Respuesta de ChatGPTBuilder.io:', JSON.stringify(chatGptData, null, 2));
         
+        // Obtener el ID del usuario de la respuesta de la API si está disponible
+        // De lo contrario, usar el ID que se pasó en la URL
+        const apiUserId = (chatGptData && typeof chatGptData === 'object' && 'data' in chatGptData && chatGptData.data && typeof chatGptData.data === 'object' && 'id' in chatGptData.data) 
+            ? String(chatGptData.data.id) 
+            : userId;
+        
+        console.log(`ID de usuario para segunda llamada: ${apiUserId}`);
+        
         // Guardamos los datos en la sesión para poder accederlos en la página de éxito
         req.session.userData = {
           firstName,
@@ -92,7 +100,7 @@ export function registerRoutes(app: Express): Server {
           phone,
           birthMonth,
           birthDay,
-          chatbotUserId: userId
+          chatbotUserId: apiUserId
         };
         
         res.json({ success: true });
@@ -153,7 +161,10 @@ export function registerRoutes(app: Express): Server {
       // Llamamos a la API de ChatGPTBuilder para enviar mensaje
       console.log(`Enviando confirmación a ChatGPTBuilder para usuario: ${userId}`);
       
-      const chatGptResponse = await fetch(`https://app.chatgptbuilder.io/api/users/${userId}/send/1736197240632`, {
+      const confirmURL = `https://app.chatgptbuilder.io/api/users/${userId}/send/1736197240632`;
+      console.log(`URL de confirmación: ${confirmURL}`);
+      
+      const chatGptResponse = await fetch(confirmURL, {
         method: "POST",
         headers: {
           "accept": "application/json",
