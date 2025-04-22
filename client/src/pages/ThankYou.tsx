@@ -91,14 +91,16 @@ export default function ThankYou() {
             />
           </div>
           
-          <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold">
-            <span className="text-[#d94214] drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">¡Gracias!</span>
-          </h1>
-          <p className="text-sm xs:text-base sm:text-xl md:text-2xl text-[#592a16] font-medium max-w-md text-center drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">
-            {dataConfirmed 
-              ? "Tu información ha sido confirmada correctamente" 
-              : "Por favor verifica que tus datos sean correctos"}
-          </p>
+          {!dataConfirmed && (
+            <>
+              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold">
+                <span className="text-[#d94214] drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">¡Gracias!</span>
+              </h1>
+              <p className="text-sm xs:text-base sm:text-xl md:text-2xl text-[#592a16] font-medium max-w-md text-center drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">
+                Por favor verifica que tus datos sean correctos
+              </p>
+            </>
+          )}
         </div>
       </div>
 
@@ -130,27 +132,27 @@ export default function ThankYou() {
               </div>
             ) : (
               <>
-                <div className="bg-white/40 backdrop-blur-lg border border-white/50 p-4 sm:p-6 rounded-lg shadow-sm">
-                  <h3 className="text-lg sm:text-xl font-bold text-[#d94214] mb-4 text-center">
-                    {dataConfirmed ? "Detalles de la Suscripción" : "¿Son estos datos correctos?"}
-                  </h3>
-                  
-                  <div className="space-y-3">
-                    <p className="text-[#592a16] font-medium">
-                      <span className="font-bold">Nombre:</span> {userData.firstName} {userData.lastName}
-                    </p>
-                    <p className="text-[#592a16] font-medium">
-                      <span className="font-bold">Email:</span> {userData.email}
-                    </p>
-                    <p className="text-[#592a16] font-medium">
-                      <span className="font-bold">Teléfono:</span> {userData.phone}
-                    </p>
-                    <p className="text-[#592a16] font-medium">
-                      <span className="font-bold">Fecha de cumpleaños:</span> {userData.birthMonth && userData.birthDay ? `${userData.birthMonth} ${userData.birthDay}` : 'No proporcionada'}
-                    </p>
-                  </div>
-                  
-                  {!dataConfirmed && (
+                {!dataConfirmed ? (
+                  <div className="bg-white/40 backdrop-blur-lg border border-white/50 p-4 sm:p-6 rounded-lg shadow-sm">
+                    <h3 className="text-lg sm:text-xl font-bold text-[#d94214] mb-4 text-center">
+                      ¿Son estos datos correctos?
+                    </h3>
+                    
+                    <div className="space-y-3">
+                      <p className="text-[#592a16] font-medium">
+                        <span className="font-bold">Nombre:</span> {userData.firstName} {userData.lastName}
+                      </p>
+                      <p className="text-[#592a16] font-medium">
+                        <span className="font-bold">Email:</span> {userData.email}
+                      </p>
+                      <p className="text-[#592a16] font-medium">
+                        <span className="font-bold">Teléfono:</span> {userData.phone}
+                      </p>
+                      <p className="text-[#592a16] font-medium">
+                        <span className="font-bold">Fecha de cumpleaños:</span> {userData.birthMonth && userData.birthDay ? `${userData.birthMonth} ${userData.birthDay}` : 'No proporcionada'}
+                      </p>
+                    </div>
+                    
                     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6">
                       <Button 
                         className="flex-1 bg-[#2d8d47] hover:bg-[#236e38] text-white font-medium h-11 sm:h-12"
@@ -167,18 +169,10 @@ export default function ThankYou() {
                         Corregir datos
                       </Button>
                     </div>
-                  )}
-                </div>
-
-                {dataConfirmed && (
-                  <div className="text-center py-4 bg-green-50/50 backdrop-blur-md rounded-lg border border-green-100">
-                    <CheckCircle className="mx-auto h-12 w-12 text-green-500 mb-2" />
-                    <p className="text-base sm:text-lg text-[#592a16] font-bold">
-                      ¡Bienvenido a la familia de Los Aztecas VIP!
-                    </p>
-                    <p className="text-sm sm:text-base text-[#592a16] mt-2">
-                      Pronto recibirás información sobre tus beneficios exclusivos.
-                    </p>
+                  </div>
+                ) : (
+                  <div className="text-center py-8 bg-green-50/50 backdrop-blur-md rounded-lg border border-green-100">
+                    <CheckCircle className="mx-auto h-20 w-20 text-green-500" />
                   </div>
                 )}
               </>
