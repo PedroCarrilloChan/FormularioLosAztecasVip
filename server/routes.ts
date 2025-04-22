@@ -151,7 +151,7 @@ export function registerRoutes(app: Express): Server {
     }
   });
   
-  // Endpoint para confirmar los datos y enviar mensaje a ChatGPTBuilder
+  // Endpoint para confirmar los datos (actualizado para el nuevo endpoint de ChatGPTBuilder)
   app.post('/api/confirm-data', async (req, res) => {
     try {
       if (!req.session.userData || !req.session.userData.chatbotUserId) {
@@ -168,19 +168,8 @@ export function registerRoutes(app: Express): Server {
       console.log(`⭐ ID de usuario: ${userId}`);
       console.log(`⭐ Datos completos: ${JSON.stringify(req.session.userData, null, 2)}`);
       
-      const confirmURL = `https://app.chatgptbuilder.io/api/users/${userId}/send/1736197240632`;
-      console.log(`⭐ URL de confirmación: ${confirmURL}`);
-      
-      const chatGptResponse = await fetch(confirmURL, {
-        method: "POST",
-        headers: {
-          "accept": "application/json",
-          "X-ACCESS-TOKEN": "1565855.C6RBAEhiHrV5b2ytPTg612PManzendsWY"
-        }
-      });
-      
-      const chatGptData = await chatGptResponse.json();
-      console.log('Respuesta de confirmación de ChatGPTBuilder:', JSON.stringify(chatGptData, null, 2));
+      // Este endpoint ahora es simplemente para registrar la confirmación en el backend
+      // El envío real de datos a ChatGPTBuilder se hace directamente desde el frontend
       
       res.json({ success: true });
     } catch (error) {
@@ -188,6 +177,74 @@ export function registerRoutes(app: Express): Server {
       res.status(500).json({
         success: false,
         error: 'Error al confirmar los datos. Por favor intente nuevamente.'
+      });
+    }
+  });
+  
+  // Endpoint para enviar datos a ChatGPTBuilder (para pruebas y como alternativa)
+  app.post('/api/send-to-chatgpt-builder', async (req, res) => {
+    try {
+      if (!req.body || !req.body.userData) {
+        return res.status(400).json({
+          success: false,
+          error: 'No se proporcionaron datos de usuario'
+        });
+      }
+      
+      const { userData } = req.body;
+      const userId = userData.chatbotUserId || (req.session.userData ? req.session.userData.chatbotUserId : null);
+      
+      if (!userId) {
+        return res.status(400).json({
+          success: false,
+          error: 'No se proporcionó ID de usuario para ChatGPTBuilder'
+        });
+      }
+      
+      console.log(`📡 Enviando datos a ChatGPTBuilder API para usuario ${userId}`);
+      console.log(`📡 Datos: ${JSON.stringify(userData, null, 2)}`);
+      
+      // Preparación de datos para ChatGPTBuilder
+      const payload = {
+        first_name: userData.firstName,
+        last_name: userData.lastName,
+        phone: userData.phone,
+        email: userData.email
+      };
+      
+      // Agregar datos de cumpleaños si están disponibles
+      if (userData.birthMonth && userData.birthDay) {
+        payload.birth_month = userData.birthMonth;
+        payload.birth_day = userData.birthDay;
+      }
+      
+      // Realizar la llamada a la API
+      const url = `https://app.chatgptbuilder.io/api/users/${userId}/send_content`;
+      console.log(`📡 URL: ${url}`);
+      console.log(`📡 Payload: ${JSON.stringify(payload, null, 2)}`);
+      
+      const chatGptResponse = await fetch(url, {
+        method: "POST",
+        headers: {
+          "accept": "application/json",
+          "X-ACCESS-TOKEN": "1565855.C6RBAEhiHrV5b2ytPTg612PManzendsWY",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+      
+      const chatGptData = await chatGptResponse.json();
+      console.log('📡 Respuesta de ChatGPTBuilder:', JSON.stringify(chatGptData, null, 2));
+      
+      res.json({ 
+        success: true,
+        data: chatGptData
+      });
+    } catch (error) {
+      console.error('Error al enviar datos a ChatGPTBuilder:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Error al enviar datos a ChatGPTBuilder.'
       });
     }
   });

@@ -20,11 +20,18 @@ export const config = {
   externalServices: {
     androidInstallUrl: import.meta.env.VITE_ANDROID_INSTALL_URL || "https://android-instalacion-automatica-onlinemidafilia.replit.app/generateLink",
   },
+  // ChatGPTBuilder configuration
+  chatGPTBuilder: {
+    accessToken: import.meta.env.VITE_CHATGPT_BUILDER_TOKEN || "1565855.C6RBAEhiHrV5b2ytPTg612PManzendsWY",
+    defaultUserId: import.meta.env.VITE_CHATGPT_BUILDER_DEFAULT_USER_ID || "1000101715537032952",
+    baseUrl: "https://app.chatgptbuilder.io/api",
+  },
   // API endpoints
   api: {
     register: "/api/register",
     loyaltyData: "/api/loyalty-data",
     androidLink: "/api/android-link",
+    sendToChatGPTBuilder: "/api/send-to-chatgpt-builder",
   }
 };
 
