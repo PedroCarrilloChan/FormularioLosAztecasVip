@@ -209,7 +209,7 @@ export function registerRoutes(app: Express): Server {
       
       // Agregar campo de cumpleaños si está disponible
       if (formattedBirthDate) {
-        payload.WC_UserBirthday = formattedBirthDate;
+        (payload as any).WC_UserBirthday = formattedBirthDate;
       }
       
       // Realizar la llamada a la API

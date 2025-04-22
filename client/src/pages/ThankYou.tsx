@@ -29,13 +29,13 @@ export default function ThankYou() {
         console.log(`Enviando datos a ChatGPTBuilder para: ${userData.firstName} ${userData.lastName}`);
         
         try {
-          // Enviar los datos directamente a ChatGPTBuilder
+          // Enviar los datos directamente a ChatGPTBuilder API para actualizar el usuario existente
           const result = await userApi.sendToChatGPTBuilder(userData);
           
           if (result.success) {
-            console.log('Datos enviados a ChatGPTBuilder con éxito');
+            console.log('Datos enviados correctamente para actualizar el usuario en ChatGPTBuilder');
             
-            // También enviamos la confirmación a nuestro backend para mantener el estado
+            // También enviamos la confirmación a nuestro backend para registrar la actualización
             try {
               await userApi.confirmData();
             } catch (backendError) {
