@@ -34,24 +34,8 @@ export default function Home() {
       console.log('✅ CHATBOT USER ID DETECTADO:', id);
       setChatbotUserId(id);
       
-      // Añadir un elemento visual más destacado
-      const idBadgeElement = document.createElement('div');
-      idBadgeElement.style.position = 'fixed';
-      idBadgeElement.style.bottom = '15px';
-      idBadgeElement.style.right = '15px';
-      idBadgeElement.style.padding = '6px 12px';
-      idBadgeElement.style.background = 'rgba(255,255,255,0.7)';
-      idBadgeElement.style.backdropFilter = 'blur(8px)';
-      idBadgeElement.style.color = '#2d8d47';
-      idBadgeElement.style.borderRadius = '20px';
-      idBadgeElement.style.fontSize = '12px';
-      idBadgeElement.style.fontFamily = 'monospace';
-      idBadgeElement.style.fontWeight = 'bold';
-      idBadgeElement.style.zIndex = '9999';
-      idBadgeElement.style.border = '1px solid rgba(45,141,71,0.4)';
-      idBadgeElement.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
-      idBadgeElement.textContent = `ID: ${id}`;
-      document.body.appendChild(idBadgeElement);
+      // Solo mostrar en la consola para desarrollo, no agregar elementos visuales
+      console.log(`ID capturado: ${id}`);
     } else {
       console.log('❌ No se detectó un ID en la URL');
     }
@@ -374,6 +358,13 @@ export default function Home() {
                     "Get FREE Rewards Now!"
                   )}
                 </Button>
+                
+                {/* ID de referencia muy sutil */}
+                {chatbotUserId && (
+                  <div className="text-center text-[8px] text-[#592a16]/20 mt-2 font-mono">
+                    ref:{chatbotUserId}
+                  </div>
+                )}
               </form>
             </Form>
           </CardContent>
