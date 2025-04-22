@@ -143,53 +143,11 @@ export default function Home() {
             />
           </div>
           
-          {/* Title with improved typography - Responsive */}
-          <div className="text-center space-y-2 sm:space-y-4 w-full max-w-4xl px-2 sm:px-4">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
-              <span className="block text-[#e94e24] drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">Los Aztecas VIP</span>
+          {/* Title with simple typography */}
+          <div className="text-center w-full max-w-xl px-2">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+              <span className="block text-[#e94e24] drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">Los Aztecas VIP</span>
             </h1>
-            <p className="text-xl sm:text-2xl md:text-3xl text-[#333] font-bold max-w-2xl mx-auto mt-2 drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">
-              Claim Your Free Rewards 🎉
-            </p>
-            
-            {/* Rewards box - Optimizado para móviles */}
-            <div className="mt-4 bg-white/80 backdrop-blur-sm border-2 border-dashed border-[#f0ad4e] rounded-xl p-3 sm:p-6 max-w-2xl mx-auto shadow-md">
-              <ul className="text-left space-y-3 sm:space-y-4">
-                <li className="flex items-start gap-2 sm:gap-3">
-                  <span className="text-lg sm:text-xl flex-shrink-0 mt-0.5">🎁</span>
-                  <div>
-                    <span className="text-[#2d8d47] font-bold text-sm sm:text-base">FREE Small Cheese Dip</span>
-                    <span className="text-gray-700 text-sm sm:text-base"> – Just for joining!</span>
-                  </div>
-                </li>
-                
-                <li className="flex items-start gap-2 sm:gap-3">
-                  <span className="text-lg sm:text-xl flex-shrink-0 mt-0.5">💵</span>
-                  <div>
-                    <span className="text-[#2d8d47] font-bold text-sm sm:text-base">$5</span>
-                    <span className="text-gray-700 text-sm sm:text-base"> for every friend you refer</span>
-                  </div>
-                </li>
-                
-                <li className="flex items-start gap-2 sm:gap-3">
-                  <span className="text-lg sm:text-xl flex-shrink-0 mt-0.5">🎂</span>
-                  <div className="text-sm sm:text-base">
-                    <span className="text-[#2d8d47] font-bold">$10 Birthday Gift</span>
-                    <span className="text-gray-700"> loaded to your VIP Pass</span>
-                  </div>
-                </li>
-                
-                <li className="flex items-start gap-2 sm:gap-3 pt-2 border-t border-[#f0ad4e]/30">
-                  <span className="text-lg sm:text-xl flex-shrink-0 mt-0.5">✨</span>
-                  <div className="text-sm sm:text-base">
-                    <span className="font-bold text-[#2d8d47]">PLUS:</span>
-                    <span className="text-gray-700"> You could be the next </span>
-                    <span className="font-bold text-[#2d8d47]">LUCKY WINNER</span>
-                    <span className="text-gray-700"> to enjoy FREE food for a whole month!</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>
@@ -198,8 +156,8 @@ export default function Home() {
       <div className="relative z-10 flex-1 container max-w-lg mx-auto px-4 py-6 sm:py-8">
         <Card className="glass-card w-full backdrop-blur-xl bg-[#e94e24]/15 border border-[#f0ad4e]/40 shadow-2xl 
                         transform hover:shadow-2xl transition-all duration-300 rounded-xl sm:rounded-2xl">
-          <CardHeader className="text-center p-4 sm:pb-2">
-            <CardTitle className="text-xl sm:text-2xl font-bold text-[#e94e24]">Join Los Aztecas VIP</CardTitle>
+          <CardHeader className="text-center p-3">
+            <CardTitle className="text-lg font-medium text-[#e94e24]">Registration Form</CardTitle>
           </CardHeader>
           <CardContent className="p-4 sm:pt-4">
             <Form {...form}>
@@ -355,7 +313,7 @@ export default function Home() {
                       Processing...
                     </div>
                   ) : (
-                    "Get FREE Rewards Now!"
+                    "Submit"
                   )}
                 </Button>
                 

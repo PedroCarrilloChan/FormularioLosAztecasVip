@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { config } from "@/config";
 import { userApi } from "@/lib/api";
@@ -48,83 +48,49 @@ export default function ThankYou() {
         } else {
           console.error('Error al confirmar datos');
         }
-      } else {
-        console.warn('No hay ID de usuario de chatbot para confirmar');
       }
     } catch (error) {
       console.error('Error al confirmar datos:', error);
-      // No revertimos el estado porque el usuario ya vio la confirmación
     }
   };
 
   const handleEditData = () => {
-    // Redirigir al formulario de inicio
     navigate('/');
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#f8c04b] via-[#fbdea3] to-[#faebcf] relative">
-      {/* Patrón mexicano de fondo para toda la página */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNDB2NDBoLTQweiIvPjxwYXRoIGQ9Ik0yMCAwdjQwTTAgMjBoNDAiIHN0cm9rZT0icmdiYSgyMTcsMzYsNDQsMC4xKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjwvc3ZnPg==')] opacity-30 pointer-events-none"></div>
-      
-      {/* Elementos decorativos para toda la página */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/5 w-64 h-64 rounded-full bg-[#d94214]/10 animate-float" style={{animationDelay: '0.5s'}}></div>
-        <div className="absolute bottom-1/4 right-1/5 w-80 h-80 rounded-full bg-[#2d8d47]/10 animate-float" style={{animationDelay: '1.2s'}}></div>
-        <div className="absolute top-3/4 left-1/3 w-72 h-72 rounded-full bg-[#f0ad4e]/20 animate-float" style={{animationDelay: '2.5s'}}></div>
-      </div>
-      
-      {/* Header con los colores de Los Aztecas */}
-      <div className="h-[30vh] sm:h-[35vh] md:h-[40vh] w-full relative overflow-hidden z-10">
-        
-        {/* Texto central con animación - Responsivo */}
-        <div className="absolute inset-0 flex items-center justify-center flex-col px-4 space-y-2 sm:space-y-4">
-          {/* Logo */}
-          <div className="w-20 h-20 xs:w-24 xs:h-24 sm:w-32 sm:h-32 mx-auto mb-2 xs:mb-3 sm:mb-4">
-            <img
-              src={config.branding.logoUrl || "https://losaztecas.s3.us-east-1.amazonaws.com/Store+Card/Los+Aztecas+Transparent1.png"}
-              alt={config.branding.name}
-              className="w-full h-full object-contain drop-shadow-xl"
-              loading="eager"
-              width="80"
-              height="80"
-            />
-          </div>
-          
-          {!dataConfirmed && (
-            <>
-              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold">
-                <span className="text-[#d94214] drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">¡Gracias!</span>
-              </h1>
-              <p className="text-sm xs:text-base sm:text-xl md:text-2xl text-[#592a16] font-medium max-w-md text-center drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">
-                Por favor verifica que tus datos sean correctos
-              </p>
-            </>
-          )}
-        </div>
+    <div className="min-h-screen w-full relative flex flex-col">
+      {/* Background simplificado */}
+      <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-[#f8c04b] via-[#fbdea3] to-[#faebcf] overflow-hidden">
+        <div className="absolute inset-0 backdrop-blur-[1px]"></div>
       </div>
 
-      {/* Contenido principal - Mejorado para responsividad */}
-      <div className="flex-1 container max-w-2xl mx-auto px-4 py-6 sm:py-8 md:py-12 z-20">
-        <Card className="bg-white/30 backdrop-blur-xl border border-white/40 w-full transform transition-all duration-300 shadow-xl relative overflow-hidden rounded-2xl before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/40 before:to-transparent before:opacity-50 before:z-0">
-          <CardHeader className="text-center p-4 pb-2 relative z-10">
-            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold">
-              <span className="text-[#d94214] drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]">Los Aztecas</span>
-              <span className="text-[#2d8d47] drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]"> VIP</span>
-            </CardTitle>
-          </CardHeader>
-          
-          <CardContent className="p-4 space-y-4 sm:space-y-6 md:space-y-8 relative z-10">
+      {/* Contenido principal simplificado */}
+      <div className="flex-1 container max-w-md mx-auto px-4 py-8 z-20 flex flex-col items-center justify-center">
+        {/* Logo */}
+        <div className="w-24 h-24 mx-auto mb-6">
+          <img
+            src={config.branding.logoUrl || "https://losaztecas.s3.us-east-1.amazonaws.com/Store+Card/Los+Aztecas+Transparent1.png"}
+            alt={config.branding.name}
+            className="w-full h-full object-contain drop-shadow-lg"
+            loading="eager"
+            width="96"
+            height="96"
+          />
+        </div>
+        
+        <Card className="bg-white/60 backdrop-blur-md border border-white/40 w-full shadow-md rounded-xl">
+          <CardContent className="p-4 space-y-4 relative">
             {isLoading ? (
-              <div className="flex justify-center items-center py-8">
+              <div className="flex justify-center items-center py-6">
                 <Loader2 className="h-8 w-8 animate-spin text-[#d94214]" />
               </div>
             ) : error || !userData ? (
               <div className="text-center py-4">
-                <XCircle className="h-12 w-12 text-red-500 mx-auto mb-2" />
-                <p className="text-[#592a16] font-medium">No se pudieron cargar tus datos. Por favor intenta nuevamente.</p>
+                <XCircle className="h-10 w-10 text-red-500 mx-auto mb-2" />
+                <p className="text-[#592a16]">Error al cargar datos.</p>
                 <Button 
-                  className="mt-4 bg-[#d94214] hover:bg-[#c13a10] text-white"
+                  className="mt-3 bg-[#d94214] hover:bg-[#c13a10] text-white"
                   onClick={() => refetch()}
                 >
                   Reintentar
@@ -133,69 +99,56 @@ export default function ThankYou() {
             ) : (
               <>
                 {!dataConfirmed ? (
-                  <div className="bg-white/40 backdrop-blur-lg border border-white/50 p-4 sm:p-6 rounded-lg shadow-sm">
-                    <h3 className="text-lg sm:text-xl font-bold text-[#d94214] mb-4 text-center">
+                  <div className="space-y-4">
+                    <h3 className="text-base font-medium text-[#d94214] text-center">
                       ¿Son estos datos correctos?
                     </h3>
                     
-                    <div className="space-y-3">
-                      <p className="text-[#592a16] font-medium">
-                        <span className="font-bold">Nombre:</span> {userData.firstName} {userData.lastName}
+                    <div className="space-y-2 bg-white/50 p-3 rounded-lg">
+                      <p className="text-[#592a16] text-sm">
+                        <span className="font-medium">Nombre:</span> {userData.firstName} {userData.lastName}
                       </p>
-                      <p className="text-[#592a16] font-medium">
-                        <span className="font-bold">Email:</span> {userData.email}
+                      <p className="text-[#592a16] text-sm">
+                        <span className="font-medium">Email:</span> {userData.email}
                       </p>
-                      <p className="text-[#592a16] font-medium">
-                        <span className="font-bold">Teléfono:</span> {userData.phone}
+                      <p className="text-[#592a16] text-sm">
+                        <span className="font-medium">Teléfono:</span> {userData.phone}
                       </p>
-                      <p className="text-[#592a16] font-medium">
-                        <span className="font-bold">Fecha de cumpleaños:</span> {userData.birthMonth && userData.birthDay ? `${userData.birthMonth} ${userData.birthDay}` : 'No proporcionada'}
+                      <p className="text-[#592a16] text-sm">
+                        <span className="font-medium">Cumpleaños:</span> {userData.birthMonth && userData.birthDay ? `${userData.birthMonth} ${userData.birthDay}` : 'No proporcionado'}
                       </p>
                     </div>
                     
-                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6">
+                    <div className="flex flex-col gap-2">
                       <Button 
-                        className="flex-1 bg-[#2d8d47] hover:bg-[#236e38] text-white font-medium h-11 sm:h-12"
+                        className="w-full bg-[#2d8d47] hover:bg-[#236e38] text-white text-sm h-10"
                         onClick={handleConfirmData}
                       >
-                        <CheckCircle className="mr-2 h-5 w-5" />
-                        Confirmar datos
+                        <CheckCircle className="mr-2 h-4 w-4" />
+                        Confirmar
                       </Button>
                       <Button 
-                        className="flex-1 bg-[#d94214] hover:bg-[#c13a10] text-white font-medium h-11 sm:h-12"
+                        className="w-full bg-[#d94214] hover:bg-[#c13a10] text-white text-sm h-10"
                         onClick={handleEditData}
                       >
-                        <XCircle className="mr-2 h-5 w-5" />
-                        Corregir datos
+                        <XCircle className="mr-2 h-4 w-4" />
+                        Corregir
                       </Button>
                     </div>
                   </div>
                 ) : (
-                  <div className="text-center py-8 bg-green-50/50 backdrop-blur-md rounded-lg border border-green-100 relative">
-                    <CheckCircle className="mx-auto h-20 w-20 text-green-500" />
+                  <div className="text-center py-6 bg-green-50/50 backdrop-blur-md rounded-lg border border-green-100 relative">
+                    <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
                     
                     {/* ID discreto */}
                     {userData.chatbotUserId && (
-                      <div className="text-center text-[8px] text-green-800/20 mt-4 font-mono">
+                      <div className="text-center text-[8px] text-green-800/20 mt-3 font-mono">
                         ref:{userData.chatbotUserId}
                       </div>
                     )}
                   </div>
                 )}
               </>
-            )}
-            
-            {config.branding.bottomImageUrl && (
-              <div className="mt-4 sm:mt-6 md:mt-8">
-                <div className="p-1 bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl">
-                  <img
-                    src={config.branding.bottomImageUrl}
-                    alt="Imagen promocional"
-                    className="max-w-full mx-auto rounded-md sm:rounded-lg shadow-inner"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
             )}
           </CardContent>
         </Card>
