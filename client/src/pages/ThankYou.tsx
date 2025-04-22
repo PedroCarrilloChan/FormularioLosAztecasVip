@@ -31,6 +31,20 @@ export default function ThankYou() {
         
         if (result.success) {
           console.log('Datos confirmados con éxito');
+          
+          // Esperar un breve tiempo para que el usuario vea el mensaje de confirmación
+          // y luego cerrar la ventana
+          setTimeout(() => {
+            console.log('Cerrando ventana...');
+            window.close();
+            
+            // Como respaldo, si window.close() no funciona (por políticas del navegador),
+            // redirigir a una URL que pueda cerrar (ChatGPTBuilder u otra URL acordada)
+            setTimeout(() => {
+              // Si después de 300ms la ventana sigue abierta, intentamos redirigir
+              window.location.href = "https://app.chatgptbuilder.io/close";
+            }, 300);
+          }, 1500); // 1.5 segundos para que el usuario vea la confirmación
         } else {
           console.error('Error al confirmar datos');
         }
