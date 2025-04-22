@@ -156,20 +156,8 @@ export default function Home() {
       <div className="relative z-10 flex-1 container max-w-lg mx-auto px-4 py-6 sm:py-8">
         <Card className="glass-card w-full backdrop-blur-xl bg-[#e94e24]/15 border border-[#f0ad4e]/40 shadow-2xl 
                         transform hover:shadow-2xl transition-all duration-300 rounded-xl sm:rounded-2xl">
-          <CardHeader className="text-center p-3 relative">
+          <CardHeader className="text-center p-3">
             <CardTitle className="text-lg font-medium text-[#e94e24]">Registration Form</CardTitle>
-            
-            {/* Indicador sutil del ID (solo visible cuando hay ID) */}
-            {chatbotUserId && (
-              <div className="absolute -top-1 right-2">
-                <div className="flex items-center">
-                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse mr-1"></div>
-                  <span className="text-[8px] text-green-700/60 font-mono tracking-tight">
-                    {chatbotUserId.slice(0, 4)}...{chatbotUserId.slice(-4)}
-                  </span>
-                </div>
-              </div>
-            )}
           </CardHeader>
           <CardContent className="p-4 sm:pt-4">
             <Form {...form}>
