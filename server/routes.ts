@@ -98,7 +98,7 @@ export function registerRoutes(app: Express): Server {
     }
   });
   
-  // Endpoint para confirmar los datos (actualizado para el nuevo endpoint de ChatGPTBuilder)
+  // Endpoint para confirmar los datos y enviar a ChatGPTBuilder
   app.post('/api/confirm-data', async (req, res) => {
     try {
       if (!req.session.userData || !req.session.userData.chatbotUserId) {
@@ -108,17 +108,102 @@ export function registerRoutes(app: Express): Server {
         });
       }
       
-      const userId = req.session.userData.chatbotUserId;
+      const userData = req.session.userData;
+      const userId = userData.chatbotUserId;
       
       // Llamamos a la API de ChatGPTBuilder para enviar mensaje
       console.log(`⭐⭐⭐ CONFIRMACIÓN DE DATOS ⭐⭐⭐`);
       console.log(`⭐ ID de usuario: ${userId}`);
-      console.log(`⭐ Datos completos: ${JSON.stringify(req.session.userData, null, 2)}`);
+      console.log(`⭐ Datos completos: ${JSON.stringify(userData, null, 2)}`);
       
-      // Este endpoint ahora es simplemente para registrar la confirmación en el backend
-      // El envío real de datos a ChatGPTBuilder se hace directamente desde el frontend
+      // Preparar formato de fecha de nacimiento
+      let formattedBirthDate = '';
+      if (userData.birthMonth && userData.birthDay) {
+        // Convertir month name a número de mes (January -> 01, February -> 02, etc.)
+        const monthNumber = (MONTHS.indexOf(userData.birthMonth) + 1).toString().padStart(2, '0');
+        // Formato: YYYY-MM-DD (usando 1980 como año)
+        formattedBirthDate = `1980-${monthNumber}-${userData.birthDay.padStart(2, '0')}`;
+      }
       
-      res.json({ success: true });
+      // Crear acciones para actualizar los campos
+      const actions = [
+        {
+          action: "set_field_value",
+          field_name: "first_name",
+          value: userData.firstName
+        },
+        {
+          action: "set_field_value",
+          field_name: "last_name",
+          value: userData.lastName
+        },
+        {
+          action: "set_field_value",
+          field_name: "email",
+          value: userData.email
+        },
+        {
+          action: "set_field_value",
+          field_name: "phone",
+          value: userData.phone
+        },
+        {
+          action: "set_field_value",
+          field_name: "full_name",
+          value: `${userData.firstName} ${userData.lastName}`
+        },
+        // Acción para iniciar un flujo específico en ChatGPTBuilder
+        {
+          action: "send_flow",
+          flow_id: 1736197240632
+        }
+      ];
+      
+      // Agregar acción de cumpleaños si está disponible
+      if (formattedBirthDate) {
+        actions.push({
+          action: "set_field_value",
+          field_name: "WC_UserBirthday",
+          value: formattedBirthDate
+        });
+      }
+      
+      // Preparación de datos para ChatGPTBuilder
+      const payload = {
+        phone: userData.phone,
+        first_name: userData.firstName,
+        last_name: userData.lastName,
+        email: userData.email,
+        actions: actions
+      };
+      
+      // Agregar campo de cumpleaños si está disponible
+      if (formattedBirthDate) {
+        (payload as any).WC_UserBirthday = formattedBirthDate;
+      }
+      
+      // Realizar la llamada a la API
+      const url = `https://app.chatgptbuilder.io/api/users/${userId}/send_content`;
+      console.log(`⭐ URL: ${url}`);
+      console.log(`⭐ Payload: ${JSON.stringify(payload, null, 2)}`);
+      
+      const chatGptResponse = await fetch(url, {
+        method: "POST",
+        headers: {
+          "accept": "application/json",
+          "X-ACCESS-TOKEN": "1565855.C6RBAEhiHrV5b2ytPTg612PManzendsWY",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+      
+      const chatGptData = await chatGptResponse.json();
+      console.log('⭐ Respuesta de ChatGPTBuilder:', JSON.stringify(chatGptData, null, 2));
+      
+      res.json({ 
+        success: true,
+        data: chatGptData
+      });
     } catch (error) {
       console.error('Error al confirmar datos:', error);
       res.status(500).json({

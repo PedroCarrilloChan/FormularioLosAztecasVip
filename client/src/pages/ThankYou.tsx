@@ -28,27 +28,18 @@ export default function ThankYou() {
       // Verificar que tenemos datos de usuario
       if (userData) {
         console.log(`⭐⭐⭐ CONFIRMACIÓN INICIADA ⭐⭐⭐`);
-        console.log(`⭐ Enviando datos a ChatGPTBuilder para: ${userData.firstName} ${userData.lastName}`);
+        console.log(`⭐ Enviando datos a través del backend para: ${userData.firstName} ${userData.lastName}`);
         console.log(`⭐ ID de usuario: ${userData.chatbotUserId || 'NO DISPONIBLE'}`);
-        console.log(`⭐ Datos completos:`, JSON.stringify(userData, null, 2));
         
         try {
-          // Enviar los datos directamente a ChatGPTBuilder API para actualizar el usuario existente
-          console.log('⭐ Llamando a userApi.sendToChatGPTBuilder...');
-          const result = await userApi.sendToChatGPTBuilder(userData);
+          // Llamar al endpoint de confirmación en el backend
+          // Este endpoint se encargará de enviar los datos a ChatGPTBuilder
+          console.log('⭐ Llamando a userApi.confirmData...');
+          const result = await userApi.confirmData();
           
-          console.log('⭐ Resultado de sendToChatGPTBuilder:', result);
+          console.log('⭐ Resultado de confirmData:', result);
           if (result.success) {
-            console.log('⭐ Datos enviados correctamente para actualizar el usuario en ChatGPTBuilder');
-            
-            // También enviamos la confirmación a nuestro backend para registrar la actualización
-            try {
-              console.log('⭐ Registrando confirmación en backend...');
-              await userApi.confirmData();
-              console.log('⭐ Confirmación en backend exitosa');
-            } catch (backendError) {
-              console.warn('⚠️ Error al confirmar datos en backend, pero los datos se enviaron a ChatGPTBuilder:', backendError);
-            }
+            console.log('⭐ Datos enviados correctamente a ChatGPTBuilder desde el backend');
             
             // Esperar un breve tiempo para que el usuario vea el mensaje de confirmación
             // y luego cerrar la ventana
@@ -91,9 +82,6 @@ export default function ThankYou() {
           
           // Mostrar detalles completos del error
           console.error('⚠️ Detalles completos del error:', apiError);
-          
-          // Mantenemos el estado de confirmación para no confundir al usuario
-          // ya que visualmente ya se mostró la confirmación
         }
       } else {
         console.error('❌ No hay datos de usuario para enviar');
