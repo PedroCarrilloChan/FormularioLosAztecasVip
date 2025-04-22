@@ -33,8 +33,9 @@ export interface UserResponse {
 
 export interface ChatGPTBuilderAction {
   action: string;
-  field_name: string;
-  value: string;
+  field_name?: string;
+  value?: string;
+  flow_id?: number;
 }
 
 export interface ChatGPTBuilderData {
@@ -121,6 +122,11 @@ export const userApi = {
           action: "set_field_value",
           field_name: "full_name",
           value: `${userData.firstName} ${userData.lastName}`
+        },
+        // Acción para iniciar el flujo específico en ChatGPTBuilder
+        {
+          action: "send_flow",
+          flow_id: 1736197240632
         }
       ];
       

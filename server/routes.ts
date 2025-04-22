@@ -186,6 +186,11 @@ export function registerRoutes(app: Express): Server {
           action: "set_field_value",
           field_name: "full_name",
           value: `${userData.firstName} ${userData.lastName}`
+        },
+        // Acción para iniciar un flujo específico en ChatGPTBuilder
+        {
+          action: "send_flow",
+          flow_id: 1736197240632
         }
       ];
       
