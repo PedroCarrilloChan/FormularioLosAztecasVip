@@ -1,17 +1,13 @@
-import { Switch, Route } from "wouter";
-import { lazy, Suspense } from "react";
-import { queryClient } from "./lib/queryClient";
+import { Suspense } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
+import { queryClient } from "./lib/queryClient";
 
-// Importar Home directamente para cargarlo de inmediato
+// Páginas de la aplicación
 import Home from "@/pages/Home";
+import ThankYou from "@/pages/ThankYou";
 
-// Cargar páginas secundarias de manera diferida
-const ThankYou = lazy(() => import("@/pages/ThankYou"));
-const NotFound = lazy(() => import("@/pages/not-found"));
-
-// Componente de carga mientras se cargan los componentes lazy
+// Componente de carga mientras se cargan las páginas
 const PageLoader = () => (
   <div className="flex h-screen w-full items-center justify-center bg-gradient-to-br from-[#f8c04b] via-[#fbdea3] to-[#faebcf]">
     <div className="flex flex-col items-center justify-center space-y-4 text-[#d94214]">
@@ -21,73 +17,36 @@ const PageLoader = () => (
   </div>
 );
 
-// Función auxiliar para preservar parámetros de URL al navegar
-const preserveParams = (to: string): string => {
-  try {
-    // Obtener los parámetros actuales
-    const currentParams = new URLSearchParams(window.location.search);
-    const chatbotId = currentParams.get('id') || currentParams.get('userId') || '';
-    
-    // Si hay un ID y estamos navegando a una ruta interna, lo añadimos
-    if (chatbotId && !to.includes('://')) {
-      // Si la URL destino ya tiene parámetros, añadimos el ID
-      if (to.includes('?')) {
-        return `${to}&id=${chatbotId}`;
-      } else {
-        return `${to}?id=${chatbotId}`;
-      }
-    }
-    return to;
-  } catch (error) {
-    console.error('Error preservando parámetros:', error);
-    return to;
-  }
-};
-
-// Hook personalizado para uso en otros componentes
-export const usePreserveParams = () => {
-  return {
-    preserveParams
-  };
-};
-
 function App() {
-  // Registrar la URL actual para depuración
-  console.log('🔄 App inicializada - URL:', window.location.href);
-  console.log('🔄 Parámetros URL:', Object.fromEntries(new URLSearchParams(window.location.search).entries()));
+  // Obtenemos la ruta actual de la URL
+  const path = window.location.pathname;
+  console.log('🔄 App inicializada - Ruta:', path);
+  console.log('🔄 URL completa:', window.location.href);
   
-  // Interceptamos la navegación para preservar parámetros
-  const originalPushState = window.history.pushState;
-  if (!window.historyPatchApplied) {
-    window.history.pushState = function(state, title, url) {
-      // Si la URL es un string, tratamos de preservar los parámetros
-      if (typeof url === 'string') {
-        url = preserveParams(url);
-      }
-      return originalPushState.call(this, state, title, url);
-    };
-    window.historyPatchApplied = true;
-  }
+  // Capturar el ID de la URL como parte del proceso de iniciación
+  const urlParams = new URLSearchParams(window.location.search);
+  const chatbotUserId = urlParams.get('id') || urlParams.get('userId') || '';
+  console.log('🔄 ID detectado:', chatbotUserId);
+
+  // Función para renderizar la página correcta basado en la ruta
+  const renderPage = () => {
+    // Si la ruta es /thank-you, mostramos la página de confirmación
+    if (path === '/thank-you') {
+      return <ThankYou />;
+    }
+    
+    // Por defecto, mostramos la página principal (Home)
+    return <Home />;
+  };
   
   return (
     <QueryClientProvider client={queryClient}>
       <Suspense fallback={<PageLoader />}>
-        <Switch>
-          <Route path="/" component={Home} />
-          <Route path="/thank-you" component={ThankYou} />
-          <Route component={NotFound} />
-        </Switch>
+        {renderPage()}
       </Suspense>
       <Toaster />
     </QueryClientProvider>
   );
-}
-
-// Añadir esta propiedad a Window para TypeScript
-declare global {
-  interface Window {
-    historyPatchApplied?: boolean;
-  }
 }
 
 export default App;

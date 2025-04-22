@@ -89,7 +89,7 @@ export default function Home() {
       console.log('⭐ Navegando a página de confirmación con ID:', id);
       
       // Redirect directly to thank you page with ID parameter
-      navigate(id ? `/thank-you?id=${id}` : '/thank-you');
+      window.location.href = id ? `/thank-you?id=${id}` : '/thank-you';
 
     } catch (error) {
       // Close loading toast
