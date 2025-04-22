@@ -132,14 +132,14 @@ export default function Home() {
       <div className="relative z-10 w-full overflow-hidden py-6 sm:py-8 md:pt-12 md:pb-8">
         <div className="container mx-auto flex flex-col items-center justify-center px-4">
           {/* Los Aztecas Logo - Optimized */}
-          <div className="w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 animate-float mb-4 sm:mb-6 md:mb-8">
+          <div className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 animate-float mb-2 mt-10">
             <img
               src={config.branding.logoUrl || "https://via.placeholder.com/200"}
               alt={config.branding.name}
-              className="w-full h-full object-contain drop-shadow-xl"
+              className="w-full h-full object-contain drop-shadow-md"
               loading="eager"
-              width="192" 
-              height="192"
+              width="128" 
+              height="128"
             />
           </div>
           

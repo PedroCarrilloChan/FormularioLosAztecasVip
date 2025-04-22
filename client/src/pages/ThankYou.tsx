@@ -67,12 +67,12 @@ export default function ThankYou() {
 
       {/* Contenido principal simplificado */}
       <div className="flex-1 container max-w-md mx-auto px-4 py-8 z-20 flex flex-col items-center justify-center">
-        {/* Logo */}
-        <div className="w-24 h-24 mx-auto mb-6">
+        {/* Logo más abajo */}
+        <div className="w-24 h-24 mx-auto mb-4 mt-12">
           <img
             src={config.branding.logoUrl || "https://losaztecas.s3.us-east-1.amazonaws.com/Store+Card/Los+Aztecas+Transparent1.png"}
             alt={config.branding.name}
-            className="w-full h-full object-contain drop-shadow-lg"
+            className="w-full h-full object-contain drop-shadow-md"
             loading="eager"
             width="96"
             height="96"
