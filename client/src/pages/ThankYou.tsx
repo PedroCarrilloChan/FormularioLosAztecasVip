@@ -5,11 +5,14 @@ import { config } from "@/config";
 import { userApi } from "@/lib/api";
 import { Loader2, CheckCircle, XCircle } from "lucide-react";
 import { useLocation } from "wouter";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function ThankYou() {
   const [, navigate] = useLocation();
   const [dataConfirmed, setDataConfirmed] = useState(false);
+  const [closing, setClosing] = useState(false);
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const mainRef = useRef<HTMLDivElement | null>(null);
 
   // Obtener los datos del usuario registrado
   const { data: userData, isLoading, error, refetch } = useQuery({
@@ -18,31 +21,39 @@ export default function ThankYou() {
     retry: 3,
     retryDelay: 1000
   });
+  
+  // Efecto para animar el cierre
+  useEffect(() => {
+    if (closing && cardRef.current && mainRef.current) {
+      // Animar el cierre del card
+      cardRef.current.style.transition = "all 0.7s ease";
+      cardRef.current.style.transform = "scale(0.1)";
+      cardRef.current.style.opacity = "0";
+      
+      // Animar el fondo
+      mainRef.current.style.transition = "all 0.9s ease";
+      mainRef.current.style.opacity = "0";
+      
+      // Después de la animación, dejar una página en blanco sin 'File not found'
+      setTimeout(() => {
+        // Remover todos los elementos de la página para una página blanca limpia
+        document.body.innerHTML = "";
+        document.body.style.backgroundColor = "white";
+      }, 800);
+    }
+  }, [closing]);
 
   const handleConfirmData = () => {
     console.log('🎯 BOTÓN CONFIRMAR PRESIONADO');
-    // Simplemente mostramos el indicador de confirmación y cerramos la ventana
+    
+    // Primero mostramos la confirmación visual
     setDataConfirmed(true);
     
-    // Cerrar la ventana después de un breve tiempo para que el usuario vea la confirmación
-    console.log('⭐ Configurando temporizador para cerrar ventana...');
+    // Después de un momento, iniciamos la animación de cierre
     setTimeout(() => {
-      console.log('⭐ Cerrando ventana...');
-      try {
-        window.close();
-        console.log('⭐ Comando window.close() ejecutado');
-      } catch (closeError) {
-        console.warn('⚠️ Error al intentar cerrar ventana:', closeError);
-      }
-      
-      // Como respaldo, si window.close() no funciona (por políticas del navegador),
-      // redirigir a una URL que pueda cerrar (ChatGPTBuilder u otra URL acordada)
-      setTimeout(() => {
-        // Si después de 300ms la ventana sigue abierta, intentamos redirigir
-        console.log('⭐ Ventana no se cerró, intentando redirección...');
-        window.location.href = "https://app.chatgptbuilder.io/close";
-      }, 300);
-    }, 1500); // 1.5 segundos para que el usuario vea la confirmación
+      console.log('⭐ Iniciando animación de cierre...');
+      setClosing(true);
+    }, 1200);
   };
 
   const handleEditData = () => {
@@ -50,7 +61,7 @@ export default function ThankYou() {
   };
 
   return (
-    <div className="min-h-screen w-full relative flex flex-col">
+    <div ref={mainRef} className="min-h-screen w-full relative flex flex-col">
       {/* Background simplificado */}
       <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-[#f8c04b] via-[#fbdea3] to-[#faebcf] overflow-hidden">
         <div className="absolute inset-0 backdrop-blur-[1px]"></div>
@@ -70,7 +81,7 @@ export default function ThankYou() {
           />
         </div>
         
-        <Card className="bg-white/60 backdrop-blur-md border border-white/40 w-full shadow-md rounded-xl">
+        <Card ref={cardRef} className="bg-white/60 backdrop-blur-md border border-white/40 w-full shadow-md rounded-xl transition-all duration-700">
           <CardContent className="p-4 space-y-4 relative">
             {isLoading ? (
               <div className="flex justify-center items-center py-6">
