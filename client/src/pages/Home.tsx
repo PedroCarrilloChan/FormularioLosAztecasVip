@@ -27,11 +27,28 @@ export default function Home() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id') || params.get('userId') || params.get('user');
     
+    console.log('URL actual:', window.location.href);
+    console.log('Parámetros de URL:', Object.fromEntries(params.entries()));
+    
     if (id) {
-      console.log('Chatbot User ID detectado:', id);
+      console.log('✅ CHATBOT USER ID DETECTADO:', id);
       setChatbotUserId(id);
+      
+      // Añadir un elemento visual para desarrollo
+      const debugElement = document.createElement('div');
+      debugElement.style.position = 'fixed';
+      debugElement.style.bottom = '10px';
+      debugElement.style.right = '10px';
+      debugElement.style.padding = '5px 10px';
+      debugElement.style.background = 'rgba(0,0,0,0.7)';
+      debugElement.style.color = 'white';
+      debugElement.style.borderRadius = '4px';
+      debugElement.style.fontSize = '12px';
+      debugElement.style.zIndex = '9999';
+      debugElement.textContent = `ID: ${id}`;
+      document.body.appendChild(debugElement);
     } else {
-      console.log('No se detectó un ID en la URL');
+      console.log('❌ No se detectó un ID en la URL');
     }
   }, [location]);
 

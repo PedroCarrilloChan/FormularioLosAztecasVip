@@ -24,6 +24,10 @@ export function registerRoutes(app: Express): Server {
       
       // Guardar el ID del chatbot si está disponible para usarlo en confirmación
       const userId = chatbotUserId || '000000000000'; // Valor por defecto si no se proporciona
+      
+      console.log('⚠️ DATOS DEL BODY:', JSON.stringify(req.body, null, 2));
+      console.log('⚠️ CHATBOT USER ID RECIBIDO:', chatbotUserId);
+      console.log('⚠️ USER ID A UTILIZAR:', userId);
 
       console.log('Datos de registro:', {
         firstName,
@@ -31,7 +35,8 @@ export function registerRoutes(app: Express): Server {
         email,
         phone,
         birthMonth,
-        birthDay
+        birthDay,
+        chatbotUserId
       });
       
       try {
