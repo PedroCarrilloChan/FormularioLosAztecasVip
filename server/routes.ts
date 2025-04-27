@@ -58,7 +58,7 @@ export function registerRoutes(app: Express): Server {
         let formattedBirthDate = '';
         if (birthMonth && birthDay) {
           const monthNumber = (MONTHS.indexOf(birthMonth) + 1).toString().padStart(2, '0');
-          formattedBirthDate = `1980-${monthNumber}-${birthDay.padStart(2, '0')}`;
+          formattedBirthDate = `2025-${monthNumber}-${birthDay.padStart(2, '0')}`;
           console.log('📱 Fecha de nacimiento formateada:', formattedBirthDate);
         }
         
@@ -207,8 +207,8 @@ export function registerRoutes(app: Express): Server {
       if (userData.birthMonth && userData.birthDay) {
         // Convertir month name a número de mes (January -> 01, February -> 02, etc.)
         const monthNumber = (MONTHS.indexOf(userData.birthMonth) + 1).toString().padStart(2, '0');
-        // Formato: YYYY-MM-DD (usando 1980 como año)
-        formattedBirthDate = `1980-${monthNumber}-${userData.birthDay.padStart(2, '0')}`;
+        // Formato: YYYY-MM-DD (usando 2025 como año)
+        formattedBirthDate = `2025-${monthNumber}-${userData.birthDay.padStart(2, '0')}`;
       }
       
       // Crear acciones para actualizar los campos
@@ -327,8 +327,8 @@ export function registerRoutes(app: Express): Server {
       if (userData.birthMonth && userData.birthDay) {
         // Convertir month name a número de mes (January -> 01, February -> 02, etc.)
         const monthNumber = (MONTHS.indexOf(userData.birthMonth) + 1).toString().padStart(2, '0');
-        // Formato: YYYY-MM-DD (usando 1980 como año)
-        formattedBirthDate = `1980-${monthNumber}-${userData.birthDay.padStart(2, '0')}`;
+        // Formato: YYYY-MM-DD (usando 2025 como año)
+        formattedBirthDate = `2025-${monthNumber}-${userData.birthDay.padStart(2, '0')}`;
       }
       
       // Crear acciones para actualizar los campos
