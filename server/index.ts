@@ -21,7 +21,7 @@ app.use(
   session({
     cookie: { maxAge: 86400000 },
     store: new MemoryStoreSession({
-      checkPeriod: 86400000 // prune expired entries every 24h
+      checkPeriod: 86400000 // prune expired entries every 24hj
     }),
     resave: false,
     secret: 'your-secret-key',
