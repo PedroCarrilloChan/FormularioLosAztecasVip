@@ -11,6 +11,7 @@ import { nanoid } from "nanoid";
 
 const viteLogger = createLogger();
 
+// Esta función está bien, la dejamos como está
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
     hour: "numeric",
@@ -22,6 +23,7 @@ export function log(message: string, source = "express") {
   console.log(`${formattedTime} [${source}] ${message}`);
 }
 
+// Esta función es para desarrollo, la dejamos como está
 export async function setupVite(app: Express, server: Server) {
   const vite = await createViteServer({
     ...viteConfig,
@@ -43,7 +45,6 @@ export async function setupVite(app: Express, server: Server) {
   app.use(vite.middlewares);
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
-
     try {
       const clientTemplate = path.resolve(
         __dirname,
@@ -51,8 +52,6 @@ export async function setupVite(app: Express, server: Server) {
         "client",
         "index.html",
       );
-
-      // always reload the index.html file from disk incase it changes
       let template = await fs.promises.readFile(clientTemplate, "utf-8");
       template = template.replace(`src="/src/main.tsx"`, `src="/src/main.tsx?v=${nanoid()}"`)
       const page = await vite.transformIndexHtml(url, template);
@@ -64,19 +63,24 @@ export async function setupVite(app: Express, server: Server) {
   });
 }
 
+// --- ESTA ES LA FUNCIÓN CORREGIDA ---
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(__dirname, "public");
+  // Cuando el servidor corre desde la carpeta 'dist', __dirname es /.../dist/server.
+  // Necesitamos apuntar a la carpeta del cliente, que estará en /.../dist/client.
+  const clientDistPath = path.resolve(__dirname, "..", "client");
 
-  if (!fs.existsSync(distPath)) {
+  // Verifica si la carpeta del cliente existe para evitar errores
+  if (!fs.existsSync(clientDistPath)) {
     throw new Error(
-      `Could not find the build directory: ${distPath}, make sure to build the client first`,
+      `No se encontró el directorio del cliente: ${clientDistPath}. Asegúrate de haber ejecutado 'npm run build' correctamente.`
     );
   }
 
-  app.use(express.static(distPath));
+  // 1. Sirve los archivos estáticos (JS, CSS, etc.) desde la carpeta del cliente.
+  app.use(express.static(clientDistPath));
 
-  // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
-    res.sendFile(path.resolve(distPath, "index.html"));
+  // 2. Para cualquier otra petición, sirve el index.html principal de React.
+  app.get("*", (_req, res) => {
+    res.sendFile(path.resolve(clientDistPath, "index.html"));
   });
 }
